@@ -1,0 +1,20 @@
+on:
+  push:
+
+jobs:
+  debug:
+    runs-on: ubuntu-latest
+    name: R&D Debug Action
+    steps:
+      - name: Git checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Debug action
+        uses: './debug'
+        with:
+          env:
+            foo_string: bar
+            foo_array:
+              - bar_one
+              - bar_two
