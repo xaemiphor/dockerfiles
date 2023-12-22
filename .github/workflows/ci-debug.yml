@@ -1,5 +1,7 @@
 on:
   push:
+    paths:
+      - ci-debug/**
 
 jobs:
   debug:
