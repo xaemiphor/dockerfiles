@@ -1,0 +1,8 @@
+# action.yml
+name: 'Git Push'
+description: 'Performs a git commit and push on behalf of the user'
+inputs: {}
+outputs: {}
+runs:
+  using: 'docker'
+  image: 'Dockerfile'

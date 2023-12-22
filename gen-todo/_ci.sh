@@ -31,13 +31,12 @@ function _set_config {
   __default=${2}
   case ${__CI} in
     github-actions|gitea-actions)
-      declare __${__var}="${!__var:-${__default}}"
+      declare __${__var}=${!__var:-${__default}}
       ;;
     drone|woodpecker)
       __ci_var=PLUGIN_${__var^^}
-      declare __${__var}="${!__ci_var:-${__default}}"
+      declare __${__var}=${!__ci_var:-${__default}}
       ;;
   esac
 }
 
-# TODO Add multiline/array config reader
