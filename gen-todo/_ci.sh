@@ -1,5 +1,5 @@
 #!/bin/bash
-#VERSION=0.0.2
+#VERSION=0.0.3
 function _ci {
   if [[ "${GITHUB_ACTIONS:-false}" == "true" ]]; then
     if [[ "${GITEA_ACTIONS:-false}" == "true" ]]; then
@@ -44,15 +44,15 @@ function _footer {
 }
 
 function _set_config {
-  __var=${1}
-  __default=${2}
+  __var="${1}"
+  __default="${2}"
   case ${__CI} in
     github-actions|gitea-actions)
-      declare __${__var}="${!__var:-${__default}}"
+      declare -g __${__var}="${!__var:-${__default}}"
       ;;
     drone|woodpecker)
       __ci_var=PLUGIN_${__var^^}
-      declare __${__var}="${!__ci_var:-${__default}}"
+      declare -g __${__var}="${!__ci_var:-${__default}}"
       ;;
   esac
 }
