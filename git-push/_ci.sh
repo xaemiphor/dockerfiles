@@ -1,5 +1,5 @@
 #!/bin/bash
-#VERSION=0.0.3
+#VERSION=0.0.4
 function _ci {
   if [[ "${GITHUB_ACTIONS:-false}" == "true" ]]; then
     if [[ "${GITEA_ACTIONS:-false}" == "true" ]]; then
@@ -58,3 +58,14 @@ function _set_config {
 }
 
 # TODO Add multiline/array config reader
+
+function _rerun_as_user {
+  T_UID=${1}
+  T_GID=${2}
+  if [[ "${T_UID}" != "${EUID}" ]]; then
+    addgroup -g ${T_GID} abcabc
+    adduser -HD -u ${T_UID} -G abcabc abcabc
+    su -mp abcabc -c "${3}"
+    exit $?
+  fi
+}

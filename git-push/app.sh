@@ -4,22 +4,24 @@ source /bin/_ci.sh
 # Parse inputs
 case ${__CI} in
   github-actions|gitea-actions)
+    __commit_root=${commit_root:-${GITHUB_WORKSPACE}}
     __commit_user=${commit_user:-${GITHUB_ACTOR}}
     __commit_email=${commit_email:-${GITHUB_ACTOR}@users.noreply.${__CI%-*}.com}
     __commit_message=${commit_message:-"ci-auto: automated commit by ${__CI} from ${GITHUB_SHA}"}
-    __commit_branch=${commit_branch:-}
+    __commit_branch=${commit_branch:-${GITHUB_REF_NAME}}
     __error_on_commit=${error_on_commit:-true}
     OIFS=$IFS
-    IFS=$'\n' __glob=( ${glob:-.} )
+    IFS=$'\n' __glob=( ${glob:-*} )
     IFS=${OIFS}
     ;;
   drone|woodpecker)
+    __commit_root=${commit_root:-${CI_WORKSPACE:-${DRONE_WORKSPACE:-}}}
     __commit_user=${PLUGIN_COMMIT_USER:-${CI_COMMIT_AUTHOR:-${DRONE_COMMIT_AUTHOR:-${__CI}}}}
     __commit_email=${PLUGIN_COMMIT_EMAIL:-${CI_COMMIT_AUTHOR_EMAIL:-${DRONE_COMMIT_AUTHOR_EMAIL:-${__CI}@noreply.localhost}}}
     __commit_message=${PLUGIN_COMMIT_MESSAGE:-"ci-auto: automated commit by ${__CI} from ${CI_COMMIT_SHA:-${DRONE_COMMIT_SHA:-????}}"}
     __commit_branch=${PLUGIN_COMMIT_BRANCH:-${CI_COMMIT_BRANCH:-${DRONE_COMMIT_BRANCH:-}}}
     __error_on_commit=${PLUGIN_ERROR_ON_COMMIT:-true}
-    IFS=',' read -ra __glob <<< "${PLUGIN_GLOB:-.}"
+    IFS=',' read -ra __glob <<< "${PLUGIN_GLOB:-*}"
     ;;
   *)
     _error "Could not identify CI environment"
@@ -27,10 +29,10 @@ case ${__CI} in
     ;;
 esac
 
+_rerun_as_user "$(stat -c "%u" "${__commit_root}")" "$(stat -c "%g" "${__commit_root}")" "${0}"
+
 # Minor tweaks from Drone environment
-if [[ -n "${CI_WORKSPACE:-${DRONE_WORKSPACE:-}}" ]]; then
-  cd ${CI_WORKSPACE:-${DRONE_WORKSPACE:-}}
-fi
+cd "${__commit_root}"
 
 ## Extra GIT Setup (copied from https://github.com/drone/drone-git/blob/master/posix/clone#L27)
 if [[ -n "${CI_NETRC_MACHINE:-${DRONE_NETRC_MACHINE:-}}" ]]; then
@@ -52,10 +54,17 @@ if [[ -n "${CI_SSH_KEY:-${DRONE_SSH_KEY:-}}" ]]; then
 fi
 
 # Pull latest, check for differences, commit and push
+set -x
+echo $PWD
+echo $__commit_root
+echo $__commit_branch
 git config pull.ff only
 git pull --quiet origin "${__commit_branch}"
-if ! git diff --quiet --exit-code HEAD -- "${__glob[@]}"; then
+# TODO Rework supporting globbing properly here
+if [[ $(git status -s | grep '^[AM?]' | wc -l) -gt 0 ]]; then
   git add "${__glob[@]}"
+  git config user.name "${__commit_user}"
+  git config user.email "${__commit_email}"
   git commit -m "${__commit_message}" --author="${__commit_user} <${__commit_email}>"
   git push --quiet --set-upstream origin ${__commit_branch}
   if [[ "${__error_on_commit}" == "true" ]]; then

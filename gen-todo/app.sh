@@ -34,4 +34,7 @@ set -x
 _header "TODO Results"
 leasot --reporter table ${_args[@]} "${__glob[@]}"
 _footer
+if [[ ! -e "${__output_file}" ]]; then
+  touch "${__output_file}"
+fi
 leasot --reporter markdown ${_args[@]} "${__glob[@]}" > "${__output_file}"

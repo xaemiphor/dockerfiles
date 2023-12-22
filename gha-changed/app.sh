@@ -1,42 +1,12 @@
 #!/bin/bash
 set -e
-changed_root=${changed_root:-${GITHUB_WORKSPACE}}
+source /bin/_ci.sh
 
-# Functions
-function _error {
-  if [[ "${GITHUB_ACTIONS:-false}" == "true" ]]; then
-    echo "::error::[ERROR] $@"
-  else
-    echo "[ERROR] $@"
-  fi
-}
-
-function _header {
-  if [[ "${GITHUB_ACTIONS:-false}" == "true" ]]; then
-    echo "::group::${@}"
-  else
-    echo "== ${@}"
-  fi
-}
-function _footer {
-  if [[ "${GITHUB_ACTIONS:-false}" == "true" ]]; then
-    echo "::endgroup::"
-  else
-    echo "=="
-  fi
-}
+_set_config "git_root" "${CI_WORKSPACE:-${DRONE_WORKSPACE:-${GITHUB_WORKSPACE}}}"
 
 # Logic
-if [[ "$(stat -c "%u" "${changed_root}")" != "${EUID}" ]]; then
-  # Switch to user that matches ownership of the git repository
-  TARGET_UID=$(stat -c "%u" "${changed_root}")
-  TARGET_GID=$(stat -c "%g" "${changed_root}")
-  addgroup -g ${TARGET_GID} abc
-  adduser -HD -u ${TARGET_UID} -G abc abc
-  su -mp abc -c $0
-  exit $?
-fi
-cd $changed_root
+_rerun_as_user "$(stat -c "%u" "${__git_root}")" "$(stat -c "%g" "${__git_root}")" "${0}"
+cd $__git_root
 if [ -d .git ] || git rev-parse --git-dir > /dev/null 2>&1 ; then
   # Folder has a git history
   if [[ -n "${SHA_START}" && -n "${SHA_END}" ]] && git merge-base --is-ancestor ${SHA_START} ${SHA_END}; then
@@ -47,7 +17,7 @@ if [ -d .git ] || git rev-parse --git-dir > /dev/null 2>&1 ; then
   fi
 else
   # Folder is not a git repository
-  _error "Folder [${changed_root}] did not have a git history."
+  _error "Folder [${__git_root}] did not have a git history."
   exit 1
 fi
 if [[ "${CHANGES}" != "" && "${CHANGES}" != "null" && "${CHANGES}" != "[]" ]]; then

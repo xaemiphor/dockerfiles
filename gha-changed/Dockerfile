@@ -6,4 +6,5 @@ RUN \
   apk --no-cache add bash git jq
 
 COPY app.sh /bin/
+COPY _ci.sh /bin/
 ENTRYPOINT /bin/app.sh
