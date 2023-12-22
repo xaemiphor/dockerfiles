@@ -3,7 +3,11 @@ set -e
 # Functions
 function _ci {
   if [[ "${GITHUB_ACTIONS:-false}" == "true" ]]; then
-    echo "github-actions"
+    if [[ "${GITEA_ACTIONS:-false}" == "true" ]]; then
+      echo "gitea-actions"
+    else
+      echo "github-actions"
+    fi
   elif [[ "${DRONE:-false}" == "true" ]]; then
     echo "drone"
   elif [[ "${CI:-false}" == "woodpecker" ]]; then
@@ -25,7 +29,7 @@ function _set_config {
   __var=${1}
   __default=${2}
   case ${__CI} in
-    github-actions)
+    github-actions|gitea-actions)
       declare __${__var}=${!__var:-${__default}}
       ;;
     drone|woodpecker)
@@ -37,9 +41,9 @@ function _set_config {
 
 # Parse inputs
 case ${__CI} in
-  github-actions)
+  github-actions|gitea-actions)
     __commit_user=${commit_user:-${GITHUB_ACTOR}}
-    __commit_email=${commit_email:-${GITHUB_ACTOR}@users.noreply.github.com}
+    __commit_email=${commit_email:-${GITHUB_ACTOR}@users.noreply.${__CI%-*}.com}
     __commit_message=${commit_message:-"ci-auto: automated commit by ${__CI} from ${GITHUB_SHA}"}
     __commit_branch=${commit_branch:-}
     __error_on_commit=${error_on_commit:-true}
