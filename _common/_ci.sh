@@ -1,5 +1,5 @@
 #!/bin/bash
-#VERSION=0.0.1
+#VERSION=0.0.2
 function _ci {
   if [[ "${GITHUB_ACTIONS:-false}" == "true" ]]; then
     if [[ "${GITEA_ACTIONS:-false}" == "true" ]]; then
@@ -23,6 +23,23 @@ function _error {
     echo "::error::[ERROR] $@"
   else
     echo "[ERROR] $@"
+  fi
+}
+
+set -e
+function _header {
+  if [[ "${GITHUB_ACTIONS:-false}" == "true" ]]; then
+    echo "::group::${@}"
+  else
+    echo "== ${@}"
+  fi
+}
+
+function _footer {
+  if [[ "${GITHUB_ACTIONS:-false}" == "true" ]]; then
+    echo "::endgroup::"
+  else
+    echo "=="
   fi
 }
 
