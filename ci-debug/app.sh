@@ -1,4 +1,5 @@
 #!/bin/bash
+set -e
 function _header {
   if [[ "${GITHUB_ACTIONS:-false}" == "true" ]]; then
     echo "::group::${@}"
