@@ -1,0 +1,35 @@
+on:
+  push:
+
+jobs:
+  identify:
+    name: Find changed folders
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+    outputs:
+      changed: "${{ steps.changed.outputs.changed }}"
+    steps:
+      - name: Git checkout
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - name: Identify changed folders
+        id: changed
+        uses: './gha-changed'
+        env:
+          changed_root: ${{ github.workspace }}
+  build:
+    name: Build containers
+    needs: identify
+    runs-on: ubuntu-latest
+    if: ${{ needs.identify.outputs.changed != '[]' && needs.identify.outputs.changed != '' }}
+    strategy:
+      fail-fast: false
+      matrix:
+        folder: ${{ fromJSON(needs.identify.outputs.changed) }}
+    steps:
+      - name: Git checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0

@@ -1,0 +1,21 @@
+# action.yml
+name: 'GHA Changed'
+description: 'GHA to identify what folders changed in the last push'
+inputs:
+  sha-start:
+    description: The start SHA
+    default: ${{ github.event.before }}
+    required: false
+  sha-end:
+    description: The start SHA
+    default: ${{ github.sha }}
+    required: false
+outputs:
+  changed:
+    description: JSON array of folder names containing changes, limited to 256
+runs:
+  using: 'docker'
+  image: 'Dockerfile'
+  env:
+    SHA_START: ${{ inputs.sha-start }}
+    SHA_END: ${{ inputs.sha-end }}
