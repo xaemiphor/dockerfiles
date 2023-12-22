@@ -40,7 +40,7 @@ cd $changed_root
 if [ -d .git ] || git rev-parse --git-dir > /dev/null 2>&1 ; then
   # Folder has a git history
   if [[ -n "${SHA_START}" && -n "${SHA_END}" ]] && git merge-base --is-ancestor ${SHA_START} ${SHA_END}; then
-    CHANGES=$(git log --name-status --pretty='format:' ${SHA_START}..${SHA_END} | awk -F '[\t/]' '!/^D/&&!/^$/&&$2 !~ /^.github$/{print $2}' | sort -u | jq -c --raw-input -s '[split("\n")[]|select(length>0)][:256]')
+    CHANGES=$(git log --name-status --pretty='format:' ${SHA_START}..${SHA_END} | awk -F '[\t/]' '!/^D/&&!/^$/&&/\//&&$2 !~ /^.github$/{print $2}' | sort -u | jq -c --raw-input -s '[split("\n")[]|select(length>0)][:256]')
   else
     _error "Either one of [${SHA_START}..${SHA_END}] was empty, or ${SHA_START} is not an ancestor of ${SHA_END}. I have not thought through either usecase yet."
     exit 1
