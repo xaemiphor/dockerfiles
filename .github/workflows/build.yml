@@ -39,7 +39,7 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
       - name: Log in to ${{ secrets.REGISTRY || vars.REGISTRY || 'ghcr.io' }}
-        if: github.event_name != 'pull_request' && steps.vars.outputs.SKIP != 'true'
+        if: github.event_name != 'pull_request'
         uses: docker/login-action@v2
         with:
           registry: ${{ secrets.REGISTRY || vars.REGISTRY || 'ghcr.io' }}
@@ -57,7 +57,9 @@ jobs:
             echo "PLATFORMS=${PLATFORMS}" | tee -a "${GITHUB_OUTPUT}"
           fi
           if skopeo inspect "docker://${{ secrets.REGISTRY || vars.REGISTRY || 'ghcr.io' }}/${{ secrets.NAMESPACE || vars.NAMESPACE || github.actor }}/${{ matrix.folder }}:${VERSION}" > /dev/null 2>&1; then
-            echo "SKIP=true" | tee -a "${GITHUB_OUTPUT}"
+            echo "ENABLE=false" | tee -a "${GITHUB_OUTPUT}"
+          else
+            echo "ENABLE=true" | tee -a "${GITHUB_OUTPUT}"
           fi
 
       - name: Generate metadata (tags, labels) for Docker
@@ -68,14 +70,13 @@ jobs:
           flavor: |
             latest=false
           tags: |
-            type=semver,pattern={{major}}.{{minor}}.{{patch}},value=${{ steps.vars.outputs.VERSION }}
-            type=semver,pattern={{major}}.{{minor}},value=${{ steps.vars.outputs.VERSION }}
-            type=semver,pattern={{major}},value=${{ steps.vars.outputs.VERSION }}
+            type=semver,pattern={{major}}.{{minor}}.{{patch}},value=${{ steps.vars.outputs.VERSION }},enable=${{ steps.vars.outputs.ENABLE }}
+            type=semver,pattern={{major}}.{{minor}},value=${{ steps.vars.outputs.VERSION }},enable=${{ steps.vars.outputs.ENABLE }}
+            type=semver,pattern={{major}},value=${{ steps.vars.outputs.VERSION }},enable=${{ steps.vars.outputs.ENABLE }}
             type=ref,event=branch
             type=sha
 
       - name: Build and push Docker image
-        if: steps.vars.outputs.SKIP != 'true'
         uses: docker/build-push-action@v4
         with:
           context: ${{ matrix.folder }}
