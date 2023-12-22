@@ -1,12 +1,8 @@
 # action.yml
 name: 'Debug'
 description: 'Debug image to test FOO output'
-inputs:
-  env:
-    description: 'Env directly passed to container'
-    required: false
+inputs: {}
 outputs: {}
 runs:
   using: 'docker'
   image: 'Dockerfile'
-  env: ${{ inputs.env }}
