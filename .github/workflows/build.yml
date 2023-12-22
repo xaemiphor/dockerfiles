@@ -22,6 +22,8 @@ jobs:
         uses: './gha-changed'
         env:
           changed_root: ${{ github.workspace }}
+          ignore: |
+            _common/
   build:
     name: Build containers
     needs: identify
