@@ -1,19 +1,6 @@
 #!/bin/bash
 set -e
-function _header {
-  if [[ "${GITHUB_ACTIONS:-false}" == "true" ]]; then
-    echo "::group::${@}"
-  else
-    echo "== ${@}"
-  fi
-}
-function _footer {
-  if [[ "${GITHUB_ACTIONS:-false}" == "true" ]]; then
-    echo "::endgroup::"
-  else
-    echo "=="
-  fi
-}
+source /bin/_ci.sh
 if [[ "${CI:-}" == "woodpecker" ]]; then
   WOODPECKER=true
 fi
