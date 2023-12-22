@@ -56,14 +56,18 @@ jobs:
           if [[ -n "${PLATFORMS}" ]]; then
             echo "PLATFORMS=${PLATFORMS}" | tee -a "${GITHUB_OUTPUT}"
           fi
-          if skopeo inspect "docker://${{ secrets.REGISTRY || vars.REGISTRY || 'ghcr.io' }}/${{ secrets.NAMESPACE || vars.NAMESPACE || github.actor }}/${{ matrix.folder }}:${VERSION}" > /dev/null 2>&1; then
+          if [[ -z "${VERSION}" ]] || skopeo inspect "docker://${{ secrets.REGISTRY || vars.REGISTRY || 'ghcr.io' }}/${{ secrets.NAMESPACE || vars.NAMESPACE || github.actor }}/${{ matrix.folder }}:${VERSION}" > /dev/null 2>&1; then
             echo "ENABLE=false" | tee -a "${GITHUB_OUTPUT}"
           else
             echo "ENABLE=true" | tee -a "${GITHUB_OUTPUT}"
           fi
+          if [[ ! -e "${{ matrix.folder }}/Dockerfile" ]]; then
+            echo "SKIP=true" | tee -a "${GITHUB_OUTPUT}"
+          fi
 
       - name: Generate metadata (tags, labels) for Docker
         id: meta
+        if: steps.vars.outputs.SKIP != 'true'
         uses: docker/metadata-action@v4
         with:
           images: ${{ secrets.REGISTRY || vars.REGISTRY || 'ghcr.io' }}/${{ secrets.NAMESPACE || vars.NAMESPACE || github.actor }}/${{ matrix.folder }}
@@ -78,6 +82,7 @@ jobs:
 
       - name: Build and push Docker image
         uses: docker/build-push-action@v4
+        if: steps.vars.outputs.SKIP != 'true'
         with:
           context: ${{ matrix.folder }}
           file: ${{ matrix.folder }}/Dockerfile
