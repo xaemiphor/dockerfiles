@@ -32,5 +32,5 @@ fi
 
 _header "leasot table"
 leasot --reporter table ${_args[@]} "${_glob[@]}"
-footer
+_footer
 leasot --reporter markdown ${_args[@]} "${_glob[@]}" > "${__output_file}"
