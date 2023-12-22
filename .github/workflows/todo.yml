@@ -1,0 +1,22 @@
+on:
+  push:
+    paths:
+      - ci-debug/**
+
+jobs:
+  debug:
+    runs-on: ubuntu-latest
+    name: Run todo and commit changes
+    steps:
+      - name: Git checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Generate todo
+        uses: './gen-todo'
+      - name: Commit and push changes
+        uses: './git-push'
+        env:
+          commit_message: "ci: Commit updated TODO"
+          commit_glob: |
+            TODO.md
