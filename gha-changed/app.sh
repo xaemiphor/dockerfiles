@@ -4,7 +4,7 @@ changed_root=${changed_root:-${GITHUB_WORKSPACE}}
 
 # Functions
 function _error {
-  if [[ "${__CI}" == "github-actions" ]]; then
+  if [[ "${GITHUB_ACTIONS:-false}" == "true" ]]; then
     echo "::error::[ERROR] $@"
   else
     echo "[ERROR] $@"
