@@ -1,5 +1,4 @@
 #!/bin/bash
-VERSION=1
 set -e
 changed_root=${changed_root:-${GITHUB_WORKSPACE}}
 

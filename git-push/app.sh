@@ -1,5 +1,4 @@
 #!/bin/bash
-VERSION=1
 set -e
 # Functions
 function _ci {
