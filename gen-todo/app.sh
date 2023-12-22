@@ -30,7 +30,8 @@ if [[ -n "${CI_WORKSPACE:-${DRONE_WORKSPACE:-}}" ]]; then
   cd ${CI_WORKSPACE:-${DRONE_WORKSPACE:-}}
 fi
 
-_header "leasot table"
-leasot --reporter table ${_args[@]} "${_glob[@]}"
+set -x
+_header "TODO Results"
+leasot --reporter table ${_args[@]} "${__glob[@]}"
 _footer
-leasot --reporter markdown ${_args[@]} "${_glob[@]}" > "${__output_file}"
+leasot --reporter markdown ${_args[@]} "${__glob[@]}" > "${__output_file}"
