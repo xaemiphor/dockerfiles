@@ -1,9 +1,9 @@
 # ci-debug
 
-## Github Actions usage
+## Github/Gitea/Forgejo Actions usage
 ```
 - name: ci-debug
-  uses docker://
+  uses docker://ghcr.io/xaemiphor/ci-debug:0.0.1
   env:
     foo_string: bar
     foo_array: |
@@ -14,7 +14,7 @@
 ## Drone usage
 ```
 - name: ci-debug
-  image:
+  image: ghcr.io/xaemiphor/ci-debug:0.0.1
   settings:
     foo_string: bar
     foo_array:
@@ -25,7 +25,7 @@
 ## Woodpecker usage
 ```
 - name: ci-debug
-  image:
+  image: ghcr.io/xaemiphor/ci-debug:0.0.1
   settings:
     foo_string: bar
     foo_array:

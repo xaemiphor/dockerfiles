@@ -4,7 +4,7 @@ This image checks each folder within the target(GITHUB_WORKSPACE by default), an
 Will automatically limit itself to 256 items per Github limit.   
 A folder is considered changed if the last commit to any object within the folder is modified.
 
-## Github Actions usage
+## Github/Gitea/Forgejo Actions usage
 ```
 jobs:
   identify:
@@ -13,7 +13,7 @@ jobs:
     steps:
       - name: gha-changed
         id: changed
-        uses docker://
+        uses docker://ghcr.io/xaemiphor/gha-changed:0.0.1
         env:
           changed_root: ${{ github.workspace }}
   build:

@@ -1,9 +1,9 @@
 # git-push
 
-## Github Actions usage
+## Github/Gitea/Forgejo Actions usage
 ```
 - name: git-push
-  uses docker://
+  uses docker://ghcr.io/xaemiphor/git-push:0.0.1
   env:
     commit_user: github-actions
     commit_email: github-actions@users.noreply.github.com
@@ -17,7 +17,7 @@
 ## Drone usage
 ```
 - name: git-push
-  image:
+  image: ghcr.io/xaemiphor/git-push:0.0.1
   settings:
     commit_user: droneio
     commit_email: droneio@noreply.localhost
@@ -31,7 +31,7 @@
 ## Woodpecker usage
 ```
 - name: git-push
-  image:
+  image: ghcr.io/xaemiphor/git-push:0.0.1
   settings:
     commit_user: woodpecker
     commit_email: woodpecker@noreply.localhost
