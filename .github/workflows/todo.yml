@@ -1,8 +1,6 @@
 on:
   workflow_dispatch:
   push:
-    paths:
-      - ci-debug/**
 
 jobs:
   debug:
