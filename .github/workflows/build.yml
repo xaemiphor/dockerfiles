@@ -2,8 +2,7 @@ on:
   push:
     paths:
       - '*/**'
-    paths-ignore:
-      - '**.md'
+      - '!**.md'
 
 jobs:
   identify:
