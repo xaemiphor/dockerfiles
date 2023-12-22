@@ -1,4 +1,4 @@
-#VERSION=0.0.1
+#VERSION=0.0.2
 #PLATFORMS=linux/amd64,linux/386,linux/arm/v6,linux/arm/v7,linux/arm64/v8
 FROM alpine:3
 

@@ -20,6 +20,7 @@ fi
 _header "CI Env check"
 echo "CI: ${CI:-}"
 echo "Github Actions: ${GITHUB_ACTIONS:-false}"
+echo "Gitea Actions: ${GITEA_ACTIONS:-false}"
 echo "Drone: ${DRONE:-false}"
 echo "Woodpecker: ${WOODPECKER:-false}"
 _footer
