@@ -3,7 +3,7 @@
 ## Github/Gitea/Forgejo Actions usage
 ```
 - name: ci-debug
-  uses docker://ghcr.io/xaemiphor/ci-debug:0.0.1
+  uses: docker://ghcr.io/xaemiphor/ci-debug:0.0.1
   env:
     foo_string: bar
     foo_array: |

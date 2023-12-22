@@ -13,7 +13,7 @@ jobs:
     steps:
       - name: gha-changed
         id: changed
-        uses docker://ghcr.io/xaemiphor/gha-changed:0.0.1
+        uses: docker://ghcr.io/xaemiphor/gha-changed:0.0.1
         env:
           changed_root: ${{ github.workspace }}
   build:

@@ -3,7 +3,7 @@
 ## Github/Gitea/Forgejo Actions usage
 ```
 - name: git-push
-  uses docker://ghcr.io/xaemiphor/git-push:0.0.1
+  uses: docker://ghcr.io/xaemiphor/git-push:0.0.1
   env:
     commit_user: github-actions
     commit_email: github-actions@users.noreply.github.com
