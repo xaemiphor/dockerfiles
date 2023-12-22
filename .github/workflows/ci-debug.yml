@@ -11,7 +11,7 @@ jobs:
         with:
           fetch-depth: 0
       - name: Debug action
-        uses: './debug'
+        uses: './ci-debug'
         env:
           foo_string: bar
           foo_array: | 

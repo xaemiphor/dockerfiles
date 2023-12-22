@@ -1,5 +1,5 @@
 # action.yml
-name: 'Debug'
+name: 'CI Debug'
 description: 'Debug image to test FOO output'
 inputs: {}
 outputs: {}

@@ -1,8 +1,8 @@
-# git-push
+# ci-debug
 
 ## Github Actions usage
 ```
-- name: debug
+- name: ci-debug
   uses docker://
   env:
     foo_string: bar
@@ -13,7 +13,7 @@
 
 ## Drone usage
 ```
-- name: debug
+- name: ci-debug
   image:
   settings:
     foo_string: bar
@@ -24,7 +24,7 @@
 
 ## Woodpecker usage
 ```
-- name: debug
+- name: ci-debug
   image:
   settings:
     foo_string: bar
