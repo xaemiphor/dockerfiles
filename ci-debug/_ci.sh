@@ -27,7 +27,7 @@ function _error {
 
 set -e
 function _header {
-  if [[ "${GITHUB_ACTIONS:-false}" == "true" ]]; then
+  if [[ "${__CI}" == "github-actions" ]]; then
     echo "::group::${@}"
   else
     echo "== ${@}"
@@ -35,7 +35,7 @@ function _header {
 }
 
 function _footer {
-  if [[ "${GITHUB_ACTIONS:-false}" == "true" ]]; then
+  if [[ "${__CI}" == "github-actions" ]]; then
     echo "::endgroup::"
   else
     echo "=="
