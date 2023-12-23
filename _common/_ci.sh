@@ -1,5 +1,5 @@
 #!/bin/bash
-#VERSION=0.0.4
+#VERSION=0.0.5
 function _ci {
   if [[ "${GITHUB_ACTIONS:-false}" == "true" ]]; then
     if [[ "${GITEA_ACTIONS:-false}" == "true" ]]; then
