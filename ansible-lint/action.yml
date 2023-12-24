@@ -1,0 +1,8 @@
+# action.yml
+name: 'ansible-lint'
+description: 'Executes ansible-lint against the intended paths'
+inputs: {}
+outputs: {}
+runs:
+  using: 'docker'
+  image: 'Dockerfile'
