@@ -5,6 +5,7 @@ if [[ "${CI:-}" == "woodpecker" ]]; then
   WOODPECKER=true
 fi
 _header "CI Env check"
+echo "Identified CI: ${__CI}"
 echo "CI: ${CI:-}"
 echo "Github Actions: ${GITHUB_ACTIONS:-false}"
 echo "Gitea Actions: ${GITEA_ACTIONS:-false}"

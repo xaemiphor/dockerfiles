@@ -15,7 +15,9 @@ jobs:
         id: changed
         uses: docker://ghcr.io/xaemiphor/gha-changed:0.0.1
         env:
-          changed_root: ${{ github.workspace }}
+          git_root: ${{ github.workspace }}
+          glob: *
+          ignore: _common
   build:
     needs: identify
     runs-on: ubuntu-latest

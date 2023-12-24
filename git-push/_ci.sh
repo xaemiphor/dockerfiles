@@ -27,7 +27,7 @@ function _error {
 
 set -e
 function _header {
-  if [[ "${GITHUB_ACTIONS:-false}" == "true" ]]; then
+  if [[ "${__CI}" == "github-actions" ]]; then
     echo "::group::${@}"
   else
     echo "== ${@}"
@@ -35,7 +35,7 @@ function _header {
 }
 
 function _footer {
-  if [[ "${GITHUB_ACTIONS:-false}" == "true" ]]; then
+  if [[ "${__CI}" == "github-actions" ]]; then
     echo "::endgroup::"
   else
     echo "=="
@@ -56,7 +56,19 @@ function _set_config {
   esac
 }
 
-# TODO Add multiline/array config reader
+function _set_array_config {
+  __var="${1}"
+  __default="${2}"
+  case ${__CI} in
+    github-actions|gitea-actions)
+      IFS=$'\n' read -d '' -ra __${__var} <<< "${!__var:-${__default}}"
+      ;;
+    drone|woodpecker)
+      __ci_var=PLUGIN_${__var^^}
+      IFS=',' read -ra __${__var} <<< "${!__ci_var:-${__default}}"
+      ;;
+  esac
+}
 
 function _rerun_as_user {
   T_UID=${1}

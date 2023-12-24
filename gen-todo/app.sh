@@ -6,35 +6,25 @@ _args=( '-x' )
 # Parse inputs
 _set_config output_file "TODO.md"
 _set_config skip_unsupported "true"
-case ${__CI} in
-  github-actions|gitea-actions)
-    OIFS=$IFS
-    IFS=$'\n' __glob=( ${glob:-**} )
-    IFS=${OIFS}
-    ;;
-  drone|woodpecker)
-    IFS=',' read -ra __glob <<< "${PLUGIN_GLOB:-**}"
-    ;;
-  *)
-    _error "Could not identify CI environment"
-    exit 1
-    ;;
-esac
+_set_array_config glob "*"
+_set_array_config ignore
 
 if [[ "${__skip_unsupported}" == "true" ]]; then
 	_args+=( '--skip-unsupported' )
 fi
 
-# Minor tweaks from Drone environment
+# TODO Make root path configurable
 if [[ -n "${CI_WORKSPACE:-${DRONE_WORKSPACE:-}}" ]]; then
   cd ${CI_WORKSPACE:-${DRONE_WORKSPACE:-}}
 fi
 
-set -x
-_header "TODO Results"
+_header "TODO Outcome"
 leasot --reporter table ${_args[@]} "${__glob[@]}"
 _footer
 if [[ ! -e "${__output_file}" ]]; then
   touch "${__output_file}"
 fi
+for __entry in ${__glob[@]}; do
+  _args+=( '--ignore' "${__entry}" )
+done
 leasot --reporter markdown ${_args[@]} "${__glob[@]}" > "${__output_file}"
