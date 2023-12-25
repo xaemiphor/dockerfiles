@@ -52,7 +52,7 @@ fi
 git config pull.ff only
 git pull --quiet origin "${__commit_branch}"
 # TODO Add some sort of support for globbing/include/exclude/etc here
-if [[ $(git status -s | grep '^[AM?]' | wc -l) -gt 0 ]]; then
+if [[ $(git status --porcelain | wc -l) -gt 0 ]]; then
   echo "Additions or modifications noted, committing and pushing to repository."
   git add . # Adds all, may eventually need to figure out globbing solution as referenced
   git config user.name "${__commit_user}"
