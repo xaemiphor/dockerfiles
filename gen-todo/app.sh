@@ -7,7 +7,7 @@ _args=( '-x' )
 _set_config path "${CI_WORKSPACE:-${DRONE_WORKSPACE:-${GITHUB_WORKSPACE}}}"
 _set_config output_file "TODO.md"
 _set_config skip_unsupported "true"
-_set_array_config glob "*"
+_set_array_config glob "**"
 _set_array_config ignore
 
 # Rerun self as taret UID to simplify potential permissions issues
