@@ -6,6 +6,7 @@ source /bin/_ci.sh
 _args=( '-p' )
 _set_config profile production
 _set_config offline "true"
+_set_array_config glob "**"
 
 ## Args building
 _args+=( '--profile' "${__profile}" )
@@ -14,4 +15,4 @@ if [[ "${__offline}" == "true" ]]; then
 fi
 
 anisble-lint --version
-ansible-lint ${_args[@]} "${__glob}"
+ansible-lint ${_args[@]} "${__glob[@]}"

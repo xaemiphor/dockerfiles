@@ -10,7 +10,7 @@
     exclude: |
       path/
       another_path/
-    glob: **
+    glob: '**'
 ```
 ## Drone usage
 ```
@@ -22,7 +22,7 @@
     exclude:
       - path/
       - another_path/
-    glob: **
+    glob: '**'
 ```
 ## Woodpecker usage
 ```
@@ -34,5 +34,5 @@
     exclude:
       - path/
       - another_path/
-    glob: **
+    glob: '**'
 ```
