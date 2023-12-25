@@ -1,9 +1,6 @@
 ### TODOs
 | Filename | line # | TODO |
 |:------|:------:|:------|
-| [_common/_ci.sh](_common/_ci.sh#L59) | 59 | Add multiline/array config reader |
-| [ci-debug/_ci.sh](ci-debug/_ci.sh#L59) | 59 | Add multiline/array config reader |
-| [gen-todo/_ci.sh](gen-todo/_ci.sh#L59) | 59 | Add multiline/array config reader |
-| [gha-changed/_ci.sh](gha-changed/_ci.sh#L59) | 59 | Add multiline/array config reader |
-| [git-push/_ci.sh](git-push/_ci.sh#L59) | 59 | Add multiline/array config reader |
-| [git-push/app.sh](git-push/app.sh#L63) | 63 | Rework supporting globbing properly here |
+| [gha-changed/app.sh](gha-changed/app.sh#L8) | 8 | Would include/exclude be more appropriate than glob/ignore? |
+| [gha-changed/app.sh](gha-changed/app.sh#L16) | 16 | Figure out how to apply glob/ignore here |
+| [git-push/app.sh](git-push/app.sh#L54) | 54 | Add some sort of support for globbing/include/exclude/etc here |
