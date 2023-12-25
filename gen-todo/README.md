@@ -5,6 +5,7 @@
 - name: gen-todo
   uses: docker://ghcr.io/xaemiphor/gen-todo:0.0.1
   env:
+#    path: ${{ github.workspace }} # Default
     ignore: |
       .gitignore
     glob: |
