@@ -2,7 +2,7 @@
 set -e
 source /bin/_ci.sh
 # Parse inputs
-_set_config "commit_root" "${CI_WORKSPACE:-${DRONE_WORKSPACE:-${GITHUB_WORKSPACE}}}"
+_set_config "path" "${CI_WORKSPACE:-${DRONE_WORKSPACE:-${GITHUB_WORKSPACE}}}"
 _set_config "error_on_commit" "false"
 _set_array_config "glob" "*"
 
@@ -25,9 +25,9 @@ case ${__CI} in
     ;;
 esac
 
-_rerun_as_user "$(stat -c "%u" "${__commit_root}")" "$(stat -c "%g" "${__commit_root}")" "${0}"
+_rerun_as_user "$(stat -c "%u" "${__path}")" "$(stat -c "%g" "${__path}")" "${0}"
 
-cd "${__commit_root}"
+cd "${__path}"
 
 ## Extra GIT Setup (copied from https://github.com/drone/drone-git/blob/master/posix/clone#L27)
 if [[ -n "${CI_NETRC_MACHINE:-${DRONE_NETRC_MACHINE:-}}" ]]; then
@@ -53,7 +53,7 @@ git config pull.ff only
 git pull --quiet origin "${__commit_branch}"
 # TODO Add some sort of support for globbing/include/exclude/etc here
 if [[ $(git status -s | grep '^[AM?]' | wc -l) -gt 0 ]]; then
-  git add "${__glob[@]}"
+  git add . # Adds all, may eventually need to figure out globbing solution as referenced
   git config user.name "${__commit_user}"
   git config user.email "${__commit_email}"
   git commit -m "${__commit_message}" --author="${__commit_user} <${__commit_email}>"

@@ -10,9 +10,6 @@
     commit_message: "ci: commit from GHA"
     commit_branch: main
     error_on_commit: true
-    commit_glob: |
-      .
-      folder/*
 ```
 ## Drone usage
 ```
@@ -24,9 +21,6 @@
     commit_message: "ci: commit from Drone.io"
     commit_branch: main
     error_on_commit: true
-    commit_glob:
-      - .
-      - folder/*
 ```
 ## Woodpecker usage
 ```
@@ -38,7 +32,4 @@
     commit_message: "ci: commit from Woodpecker-ci"
     commit_branch: main
     error_on_commit: true
-    commit_glob:
-      - .
-      - folder/*
 ```
