@@ -24,3 +24,7 @@ for entry in ${__VARS[@]}; do
   echo "[value] ${!entry}"
 done
 _footer
+
+_header "Current path information ${PWD}"
+stat ${PWD}
+_footer
