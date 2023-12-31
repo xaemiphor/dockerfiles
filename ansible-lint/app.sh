@@ -14,5 +14,5 @@ if [[ "${__offline}" == "true" ]]; then
 	_args+=( '--offline' )
 fi
 
-anisble-lint --version
+ansible-lint --version
 ansible-lint ${_args[@]} "${__glob[@]}"
