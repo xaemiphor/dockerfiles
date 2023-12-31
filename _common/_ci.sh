@@ -72,6 +72,7 @@ function _set_array_config {
 }
 
 function _set_array_glob {
+  # TODO Figure out best way to handle/support globstar
   __var="${1}"
   __default="${@:2}"
   case ${__CI} in
