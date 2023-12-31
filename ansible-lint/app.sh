@@ -6,7 +6,7 @@ source /bin/_ci.sh
 _args=( '-p' )
 _set_config profile production
 _set_config offline "true"
-_set_array_config glob "**"
+_set_array_glob glob "*"
 
 ## Args building
 _args+=( '--profile' "${__profile}" )

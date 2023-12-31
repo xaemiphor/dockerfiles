@@ -65,8 +65,24 @@ function _set_array_config {
       ;;
     drone|woodpecker)
       __ci_var=PLUGIN_${__var^^}
-      delcare -ga __${__var}
+      declare -ga __${__var}
       IFS=',' read -ra __${__var} <<< "${!__ci_var:-${__default}}"
+      ;;
+  esac
+}
+
+function _set_array_glob {
+  __var="${1}"
+  __default="${@:2}"
+  case ${__CI} in
+    github-actions|gitea-actions)
+      declare -ga __${__var}
+      read -ra __${__var} <<< "${!__var:-${__default}}"
+      ;;
+    drone|woodpecker)
+      __ci_var=PLUGIN_${__var^^}
+      declare -ga __${__var}
+      read -ra __${__var} <<< "${!__ci_var:-${__default}}"
       ;;
   esac
 }
