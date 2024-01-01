@@ -1,0 +1,31 @@
+version: '3.9'
+
+services:
+  fooocus:
+    build:
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    environment:
+      TZ: "UTC"
+    runtime: nvidia
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities:
+                - gpu
+    ports:
+      - "81:8080"
+    volumes:
+      - "/srv/config/fooocus:/config" # Holds config files, etc
+      - "/srv/data/fooocus:/data" # Hold models and output
+    environment:
+      THEME: dark
+      PRESET: realistic
+      ALWAYS: gpu
+    labels:
+      - homepage.group=ImageGeneration
+      - homepage.name=Fooocus
+      - homepage.href=http://<this-host>:81/
