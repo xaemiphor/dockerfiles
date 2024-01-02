@@ -43,9 +43,6 @@ if [[ -f "/config/config.txt" ]]; then
     jq --arg var "$var" --arg val "${!ENV_VAR}" '.[$var] = $val' /config/config.txt > /tmp/config.txt.modified
     mv /tmp/config.txt.modified /config/config.txt
   done
-  # Set prompt expansion back to fooocus
-  jq --arg var "path_fooocus_expansion" --arg val "/app/models/prompt_expansion/fooocus_expansion" '.[$var] = $val' /config/config.txt > /tmp/config.txt.modified
-  mv /tmp/config.txt.modified /config/config.txt
   for path_cfg in $(jq -c --raw-output 'to_entries[] | select(.key | startswith("path_")) | .value' /config/config.txt); do
     mkdir -p "${path_cfg}"
   done
@@ -63,6 +60,14 @@ fi
 if [[ ! -L "/app/presets" ]]; then
   ln -s /config/presets /app/presets
 fi
+
+# Copy fooocus_expansion to /data
+path_fooocus_expansion=$(jq -c --raw-output '.path_fooocus_expansion' /app/config.txt )
+for object in $(find /app/models/prompt_expansion/fooocus_expansion -type f -printf '%P\n'); do
+  if [[ ! -e "${path_fooocus_expansion}/${object}" ]]; then
+    cp "/app/models/prompt_expansion/fooocus_expansion/${object}" "${path_fooocus_expansion}/${object}"
+  fi
+done
 
 cd /app
 python ${SCRIPT:-entry_with_update.py} ${_ARGS[@]}
