@@ -17,9 +17,18 @@ if [[ -n "${ALWAYS}" ]]; then
   _ARGS+=( "--always-${ALWAYS,,}" )
 fi
 
-# TODO Figure out how to force generate the config.txt file without starting Fooocus, put it at /app/config.txt
-if [[ -e "/config/config.txt" ]]; then
-  cp /config/config.txt /app/config.txt
+if [[ ! -e "/config/config.txt" && ! -e "/app/config.txt" ]]; then
+  # Create /config/config.txt, then move it to /app/config.txt
+  cd /app
+  python3 -c 'import modules.config'
+  mv /app/config.txt /config/config.txt
+fi
+if [[ -f "/config/config.txt" ]]; then
+  # Delete /app/config.txt if exists and create symlink
+  if [[ -e "/app/config.txt" && ! -L "/app/config.txt" ]]; then
+    rm /app/config.txt
+  fi
+  ln -s /config/config.txt /app/config.txt
 fi
 
 if [[ -d "/config/presets" && $(ls -1 /config/presets | wc -l) -gt 0 ]]; then
@@ -28,20 +37,17 @@ fi
 
 if [[ -e "/app/config.txt" ]]; then
   # Redirect all /app prefixes to /data
-  jq '.[] |= sub("^/app/";"/data/")' /app/config.txt > /tmp/config.txt.modified
-  mv /tmp/config.txt.modified /app/config.txt
+  jq '.[] |= sub("^/app/";"/data/")' /config/config.txt > /tmp/config.txt.modified
+  mv /tmp/config.txt.modified /config/config.txt
   # Load config arguments passed as CFG__ env vars
   for ENV_VAR in $(env | awk -F '=' '/^CFG__/{print $1}'); do
     var=$(echo "${ENV_VAR,,}" | sed 's/^cfg__//g')
-    jq --arg var "$var" --arg val "${!ENV_VAR}" '.[$var] = $val' /app/config.txt > /tmp/config.txt.modified
-    mv /tmp/config.txt.modified /app/config.txt
+    jq --arg var "$var" --arg val "${!ENV_VAR}" '.[$var] = $val' /config/config.txt > /tmp/config.txt.modified
+    mv /tmp/config.txt.modified /config/config.txt
   done
-  for path_cfg in $(jq -c --raw-output 'to_entries[] | select(.key | startswith("path_")) | .value' /app/config.txt); do
+  for path_cfg in $(jq -c --raw-output 'to_entries[] | select(.key | startswith("path_")) | .value' /config/config.txt); do
     mkdir -p "${path_cfg}"
   done
-  if [[ ! -e "/config/config.txt" ]]; then
-    cp /app/config.txt /config/config.txt
-  fi
 fi
 
 cd /app
