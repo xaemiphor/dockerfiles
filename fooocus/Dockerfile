@@ -14,4 +14,4 @@ RUN \
 
 ENTRYPOINT ["/entrypoint.sh"]
 HEALTHCHECK --interval=5m --timeout=3s --start-period=5m \
-  CMD-SHELL curl -f http://localhost:${PORT:-8080}/info || exit 1
+  CMD curl -f http://localhost:${PORT:-8080}/info || exit 1
