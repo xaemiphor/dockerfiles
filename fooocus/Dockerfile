@@ -13,5 +13,5 @@ RUN \
     git clone --depth 1 https://github.com/lllyasviel/Fooocus.git /app
 
 ENTRYPOINT ["/entrypoint.sh"]
-HEALTHCHECK --interval=5m --timeout=3s --start-period=5m \
+HEALTHCHECK --interval=30s --timeout=5s --start-period=5m \
   CMD curl -f http://localhost:${PORT:-8080}/info || exit 1
