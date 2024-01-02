@@ -13,8 +13,9 @@ CFG__* | string - Will replace the matching key with the value in config.txt pri
 
 Useful to know:
 ```
-/config/config.txt - Is copied to /app/config.txt on startup
-/config/presets/* - Is copied to /app/presets/ on startup, can be used with PRESET env var
+/config/config.txt - Is symlinked to where fooocus expects it, and will be modified by CFG_ env vars directly
+/config/presets/* - Is populated by foocus defaults, then directly symlinked
+/data/outputs/ - Is hardcoded due to gradio/fooocus not passing files outside the project directory
 ```
 
 ## docker-compose
@@ -25,8 +26,6 @@ services:
   fooocus:
     image: ghcr.io/xaemiphor/fooocus:main
     restart: unless-stopped
-    environment:
-      TZ: "UTC"
     runtime: nvidia
     deploy:
       resources:
@@ -42,6 +41,7 @@ services:
       - "/srv/config/fooocus:/config" # Holds config files, etc
       - "/srv/data/fooocus:/data" # Hold models and output
     environment:
+      TZ: "UTC"
       THEME: dark
       PRESET: realistic
     labels:

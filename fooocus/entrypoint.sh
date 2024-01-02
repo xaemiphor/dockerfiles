@@ -43,9 +43,22 @@ if [[ -f "/config/config.txt" ]]; then
     jq --arg var "$var" --arg val "${!ENV_VAR}" '.[$var] = $val' /config/config.txt > /tmp/config.txt.modified
     mv /tmp/config.txt.modified /config/config.txt
   done
+  # Hardcode path_outputs back to /app, as gradio blocks providing this
+  jq --arg var "path_outputs" --arg val "/app/outputs" '.[$var] = $val' /config/config.txt > /tmp/config.txt.modified
+  mv /tmp/config.txt.modified /config/config.txt
   for path_cfg in $(jq -c --raw-output 'to_entries[] | select(.key | startswith("path_")) | .value' /config/config.txt); do
     mkdir -p "${path_cfg}"
   done
+fi
+
+# https://github.com/lllyasviel/Fooocus/issues/907
+# https://github.com/lllyasviel/Fooocus/issues/1485
+# Too lazy to invent a secondary configuration file and map symlinks more than this.
+if [[ ! -L "/app/outputs" ]]; then
+  if [[ -d "/app/outputs" ]]; then
+    rmdir /app/outputs
+  fi
+  ln -s /data/outputs /app/outputs
 fi
 
 # Move presets to /config
