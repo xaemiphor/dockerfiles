@@ -17,6 +17,7 @@ if [[ -n "${ALWAYS}" ]]; then
   _ARGS+=( "--always-${ALWAYS,,}" )
 fi
 
+# Setup config file to be symlink in config
 if [[ ! -e "/config/config.txt" && ! -e "/app/config.txt" ]]; then
   # Create /config/config.txt, then move it to /app/config.txt
   cd /app
@@ -31,11 +32,8 @@ if [[ -f "/config/config.txt" ]]; then
   ln -s /config/config.txt /app/config.txt
 fi
 
-if [[ -d "/config/presets" && $(ls -1 /config/presets | wc -l) -gt 0 ]]; then
-  cp /config/presets/* /app/presets/
-fi
-
-if [[ -e "/app/config.txt" ]]; then
+# Adjust the config.txt file and it's relative paths
+if [[ -f "/config/config.txt" ]]; then
   # Redirect all /app prefixes to /data
   jq '.[] |= sub("^/app/";"/data/")' /config/config.txt > /tmp/config.txt.modified
   mv /tmp/config.txt.modified /config/config.txt
@@ -45,9 +43,25 @@ if [[ -e "/app/config.txt" ]]; then
     jq --arg var "$var" --arg val "${!ENV_VAR}" '.[$var] = $val' /config/config.txt > /tmp/config.txt.modified
     mv /tmp/config.txt.modified /config/config.txt
   done
+  # Set prompt expansion back to fooocus
+  jq --arg var "path_fooocus_expansion" --arg val "/app/models/prompt_expansion/fooocus_expansion" '.[$var] = $val' /config/config.txt > /tmp/config.txt.modified
+  mv /tmp/config.txt.modified /config/config.txt
   for path_cfg in $(jq -c --raw-output 'to_entries[] | select(.key | startswith("path_")) | .value' /config/config.txt); do
     mkdir -p "${path_cfg}"
   done
+fi
+
+# Move presets to /config
+if [[ -d "/app/presets" ]]; then
+  if [[ ! -d "/config/presets" ]]; then
+    mv /app/presets /config/presets
+  elif [[ -d "/config/presets" ]]; then
+    # TODO Check for new preset files and consider copying over
+    rm -r /app/presets
+  fi
+fi
+if [[ ! -L "/app/presets" ]]; then
+  ln -s /config/presets /app/presets
 fi
 
 cd /app
