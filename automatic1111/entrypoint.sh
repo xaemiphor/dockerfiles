@@ -58,7 +58,7 @@ for _var in 'theme'; do
   if [[ -n "${!ENV_VAR}" ]]; then
     _ARGS+=( "--${_var}" "${!ENV_VAR}" )
   fi
-don
+done
 
 cd /app
 python ${SCRIPT:-webui.py} ${_ARGS[@]}
