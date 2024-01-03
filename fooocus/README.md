@@ -2,13 +2,13 @@
 
 A simple docker wrapper on https://github.com/lllyasviel/Fooocus.   
 Entrypoint updates config.txt to use /data instead of /app, but retains existing structures.   
+Other than attempting to restructure content between /config and /data folders, no other changes are made.
 
 Env Vars coded:
 ```
 AUTOUPDATE | true/false - Uses either entry_with_update.py or launch.py
-preset | string - Load a preset json file
-theme | string - Set to dark to default to dark theme
 CFG__* | string - Will replace the matching key with the value in config.txt prior to starting Fooocus
+ARG__* | string - Direct passthrough of arguments to the launch command
 ```
 
 Useful to know:
@@ -42,8 +42,9 @@ services:
       - "/srv/data/fooocus:/data" # Hold models and output
     environment:
       TZ: "UTC"
-      THEME: dark
-      PRESET: realistic
+      ARG__THEME: dark
+      ARG__PRESET: realistic
+      ARG__ALWAYS_GPU:
     labels:
       - homepage.group=ImageGeneration
       - homepage.name=Fooocus

@@ -21,9 +21,9 @@ services:
       - "/srv/data/fooocus:/data" # Hold models and output
     environment:
       TZ: "UTC"
-      THEME: dark
-      PRESET: realistic
-      ALWAYS: gpu
+      ARG__THEME: dark
+      ARG__PRESET: realistic
+      ARG__ALWAYS_GPU:
     labels:
       - homepage.group=ImageGeneration
       - homepage.name=Fooocus

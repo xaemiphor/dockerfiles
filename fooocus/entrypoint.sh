@@ -6,17 +6,6 @@ if [[ "${AUTOUPDATE}" == "false" ]]; then
   SCRIPT=launch.py
 fi
 
-for _var in 'preset' 'theme'; do
-  ENV_VAR=${_var^^}
-  if [[ -n "${!ENV_VAR}" ]]; then
-    _ARGS+=( "--${_var}" "${!ENV_VAR}" )
-  fi
-done
-
-if [[ -n "${ALWAYS}" ]]; then
-  _ARGS+=( "--always-${ALWAYS,,}" )
-fi
-
 if [[ ! -f "/config/config.txt" ]]; then
   if [[ -e "/app/config.txt" ]]; then
     rm /app/config.txt
@@ -42,7 +31,7 @@ if [[ -f "/config/config.txt" ]]; then
   jq '.[] |= sub("^/app/";"/data/")' /config/config.txt > /tmp/config.txt.modified
   mv /tmp/config.txt.modified /config/config.txt
   # Load config arguments passed as CFG__ env vars
-  for ENV_VAR in $(env | awk -F '=' '/^CFG__/{print $1}'); do
+  for ENV_VAR in $(env | awk -F '=' '/^CFG__/{print $1}' | sort); do
     var=$(echo "${ENV_VAR,,}" | sed 's/^cfg__//g')
     jq --arg var "$var" --arg val "${!ENV_VAR}" '.[$var] = $val' /config/config.txt > /tmp/config.txt.modified
     mv /tmp/config.txt.modified /config/config.txt
@@ -83,6 +72,21 @@ path_fooocus_expansion=$(jq -c --raw-output '.path_fooocus_expansion' /app/confi
 for object in $(find /app/models/prompt_expansion/fooocus_expansion -type f -printf '%P\n'); do
   if [[ ! -e "${path_fooocus_expansion}/${object}" ]]; then
     cp "/app/models/prompt_expansion/fooocus_expansion/${object}" "${path_fooocus_expansion}/${object}"
+  fi
+done
+
+# Direct ARG passthrough
+for _arg in $(env | awk -F '=' '/^ARG__/{print $1}' | sort); do
+  var=$(echo "${_arg,,}" | sed 's/^arg__//g')
+  value="${!_arg}"
+  if [[ -z "${value}" ]]; then
+    _ARGS+=( "--${var}" )
+  elif [[ "${value,,}" == "true" || "${value,,}" == "false" ]]; then
+    _ARGS+=( "--${var}" "${value,,}" )
+  elif [[ -n "${value}" ]]; then
+    _ARGS+=( "--${var}" "${value}" )
+  else
+    echo "[ENTRYPOINT]: ERROR - ${_arg} / ${var} / ${value} - Not sure what these are"
   fi
 done
 

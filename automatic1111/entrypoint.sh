@@ -41,7 +41,7 @@ done
 # Preconfigure config.json
 if [[ -f "/config/config.json" ]]; then
   # Load config arguments passed as CFG__ env vars
-  for ENV_VAR in $(env | awk -F '=' '/^CFG__/{print $1}'); do
+  for ENV_VAR in $(env | awk -F '=' '/^CFG__/{print $1}' | sort); do
     var=$(echo "${ENV_VAR,,}" | sed 's/^cfg__//g')
     value="${!ENV_VAR}"
     re='^[-]?[0-9]+([.][0-9]+)?$'
@@ -55,10 +55,17 @@ if [[ -f "/config/config.json" ]]; then
   done
 fi
 
-for _var in 'theme'; do
-  ENV_VAR=${_var^^}
-  if [[ -n "${!ENV_VAR}" ]]; then
-    _ARGS+=( "--${_var}" "${!ENV_VAR}" )
+for _arg in $(env | awk -F '=' '/^ARG__/{print $1}' | sort); do
+  var=$(echo "${_arg,,}" | sed 's/^arg__//g')
+  value="${!_arg}"
+  if [[ -z "${value}" ]]; then
+    _ARGS+=( "--${var}" )
+  elif [[ "${value,,}" == "true" || "${value,,}" == "false" ]]; then
+    _ARGS+=( "--${var}" "${value,,}" )
+  elif [[ -n "${value}" ]]; then
+    _ARGS+=( "--${var}" "${value}" )
+  else
+    echo "[ENTRYPOINT]: ERROR - ${_arg} / ${var} / ${value} - Not sure what these are"
   fi
 done
 
