@@ -26,5 +26,5 @@ services:
       ALWAYS: gpu
     labels:
       - homepage.group=ImageGeneration
-      - homepage.name=Fooocus
+      - homepage.name=AUTOMATIC1111
       - homepage.href=http://<this-host>:81/
