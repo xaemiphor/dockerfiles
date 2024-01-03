@@ -26,6 +26,8 @@ for entry in 'models' 'outputs' 'log' 'extensions' 'embeddings'; do
   if [[ ! -d "/data/${entry}" ]]; then
     if [[ -d "/app/${entry}" ]]; then
       mv "/app/${entry}" "/data/${entry}"
+    else
+      mkdir "/data/${entry}"
     fi
   fi
   if [[ ! -L "/app/${entry}" ]]; then
