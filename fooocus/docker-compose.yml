@@ -5,8 +5,6 @@ services:
     build:
       dockerfile: Dockerfile
     restart: unless-stopped
-    environment:
-      TZ: "UTC"
     runtime: nvidia
     deploy:
       resources:
@@ -22,6 +20,7 @@ services:
       - "/srv/config/fooocus:/config" # Holds config files, etc
       - "/srv/data/fooocus:/data" # Hold models and output
     environment:
+      TZ: "UTC"
       THEME: dark
       PRESET: realistic
       ALWAYS: gpu
