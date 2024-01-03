@@ -1,5 +1,9 @@
 FROM python:3.10
 
+WORKDIR /app
+
+COPY entrypoint.sh /entrypoint.sh
+
 RUN \
     wget -q https://github.com/jqlang/jq/releases/download/jq-1.7.1/jq-linux-amd64 -O /usr/bin/jq && chmod +x /usr/bin/jq && \
     apt-get update && apt-get -y install wget git python3 python3-venv libgl1 libglib2.0-0 && apt-get clean && \
