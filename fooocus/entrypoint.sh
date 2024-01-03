@@ -17,12 +17,17 @@ if [[ -n "${ALWAYS}" ]]; then
   _ARGS+=( "--always-${ALWAYS,,}" )
 fi
 
-# Setup config file to be symlink in config
-if [[ ! -e "/config/config.txt" && ! -e "/app/config.txt" ]]; then
-  # Create /config/config.txt, then move it to /app/config.txt
-  cd /app
-  python3 -c 'import modules.config'
-  mv /app/config.txt /config/config.txt
+if [[ ! -e "/config/config.txt" ]]; then
+  if [[ -L "/app/config.txt" ]]; then
+    rm /app/config.txt
+  fi
+  # Setup config file to be symlink in config
+  if [[ ! -e "/app/config.txt" ]]; then
+    # Create /config/config.txt, then move it to /app/config.txt
+    cd /app
+    python3 -c 'import modules.config'
+    mv /app/config.txt /config/config.txt
+  fi
 fi
 if [[ -f "/config/config.txt" ]]; then
   # Delete /app/config.txt if exists and create symlink
