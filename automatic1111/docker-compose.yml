@@ -22,8 +22,6 @@ services:
     environment:
       TZ: "UTC"
       THEME: dark
-      PRESET: realistic
-      ALWAYS: gpu
     labels:
       - homepage.group=ImageGeneration
       - homepage.name=AUTOMATIC1111

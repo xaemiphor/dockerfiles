@@ -22,7 +22,7 @@ if [[ -f "/config/config.json" ]]; then
 fi
 
 # Move some paths to /data
-for entry in 'models' 'outputs' 'log' 'extensions'; do
+for entry in 'models' 'outputs' 'log' 'extensions' 'embeddings'; do
   if [[ ! -d "/data/${entry}" ]]; then
     if [[ -d "/app/${entry}" ]]; then
       mv "/app/${entry}" "/data/${entry}"
@@ -52,6 +52,13 @@ if [[ -f "/config/config.json" ]]; then
     fi
   done
 fi
+
+for _var in 'theme'; do
+  ENV_VAR=${_var^^}
+  if [[ -n "${!ENV_VAR}" ]]; then
+    _ARGS+=( "--${_var}" "${!ENV_VAR}" )
+  fi
+don
 
 cd /app
 python ${SCRIPT:-webui.py} ${_ARGS[@]}

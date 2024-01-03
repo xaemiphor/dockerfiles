@@ -34,6 +34,7 @@ services:
       - "/srv/data/automatic1111:/data" # Hold models and output
     environment:
       TZ: "UTC"
+      THEME: "dark"
     labels:
       - homepage.group=ImageGeneration
       - homepage.name=AUTOMATIC1111
