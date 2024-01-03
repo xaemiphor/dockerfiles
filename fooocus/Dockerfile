@@ -4,14 +4,15 @@ WORKDIR /app
 
 COPY entrypoint.sh /entrypoint.sh
 
+# TODO Rework this to not run as root
 RUN \
     wget -q https://github.com/jqlang/jq/releases/download/jq-1.7.1/jq-linux-amd64 -O /usr/bin/jq && chmod +x /usr/bin/jq && \
     pip install --upgrade pip && \
     git clone --depth 1 https://github.com/lllyasviel/Fooocus.git /app && \
     cd /app && pip install --no-cache-dir -r requirements_versions.txt && \
+    pip install --no-cache-dir opencv-python-headless && \
     cd /app && python -c 'import launch; prepare_environment()' && \
-    cd /app && git clean -dfx && git clean -dfX && \
-    pip install --no-cache-dir opencv-python-headless
+    cd /app && git clean -dfx && git clean -dfX
 
 ENTRYPOINT ["/entrypoint.sh"]
 HEALTHCHECK --interval=30s --timeout=5s --start-period=5m \
