@@ -26,10 +26,12 @@ if [[ ! -e "/config/config.txt" && ! -e "/app/config.txt" ]]; then
 fi
 if [[ -f "/config/config.txt" ]]; then
   # Delete /app/config.txt if exists and create symlink
-  if [[ -e "/app/config.txt" && ! -L "/app/config.txt" ]]; then
-    rm /app/config.txt
+  if [[ ! -L "/app/config.txt" ]]; then
+    if [[ -e "/app/config.txt" ]]; then
+      rm /app/config.txt
+    fi
+    ln -s /config/config.txt /app/config.txt
   fi
-  ln -s /config/config.txt /app/config.txt
 fi
 
 # Adjust the config.txt file and it's relative paths
