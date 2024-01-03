@@ -17,8 +17,8 @@ if [[ -n "${ALWAYS}" ]]; then
   _ARGS+=( "--always-${ALWAYS,,}" )
 fi
 
-if [[ ! -e "/config/config.txt" ]]; then
-  if [[ -L "/app/config.txt" ]]; then
+if [[ ! -f "/config/config.txt" ]]; then
+  if [[ -e "/app/config.txt" ]]; then
     rm /app/config.txt
   fi
   # Setup config file to be symlink in config
@@ -29,14 +29,11 @@ if [[ ! -e "/config/config.txt" ]]; then
     mv /app/config.txt /config/config.txt
   fi
 fi
-if [[ -f "/config/config.txt" ]]; then
-  # Delete /app/config.txt if exists and create symlink
-  if [[ ! -L "/app/config.txt" ]]; then
-    if [[ -e "/app/config.txt" ]]; then
-      rm /app/config.txt
-    fi
-    ln -s /config/config.txt /app/config.txt
+if [[ ! -L "/app/config.txt" ]]; then
+  if [[ -e "/app/config.txt" ]]; then
+    rm /app/config.txt
   fi
+  ln -s /config/config.txt /app/config.txt
 fi
 
 # Adjust the config.txt file and it's relative paths
