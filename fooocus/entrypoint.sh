@@ -1,6 +1,6 @@
 #!/bin/bash
 set -e
-_ARGS=( '--listen' '--port' "${PORT:-8080}" )
+_ARGS=( '--listen' '--port' "${PORT:-7865}" )
 
 if [[ "${AUTOUPDATE}" == "false" ]]; then
   SCRIPT=launch.py
