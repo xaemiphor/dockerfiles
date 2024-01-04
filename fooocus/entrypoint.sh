@@ -47,7 +47,8 @@ fi
 # https://github.com/lllyasviel/Fooocus/issues/907
 # https://github.com/lllyasviel/Fooocus/issues/1485
 # Too lazy to invent a secondary configuration file and map symlinks more than this.
-if [[ ! -L "/app/outputs" ]]; then
+# TODO Fooocus is following the symlink and generating a bad URL... so this doesn't work either
+if ! mountpoint -q "/app/outputs" && [[ ! -L "/app/outputs" ]]; then
   if [[ -d "/app/outputs" ]]; then
     rmdir /app/outputs
   fi
