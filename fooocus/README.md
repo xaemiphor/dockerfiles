@@ -44,7 +44,7 @@ services:
       TZ: "UTC"
       ARG__THEME: dark
       ARG__PRESET: realistic
-      ARG__ALWAYS_GPU:
+      ARG__ALWAYS_GPU: true
     labels:
       - homepage.group=ImageGeneration
       - homepage.name=Fooocus
