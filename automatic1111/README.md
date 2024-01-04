@@ -35,6 +35,8 @@ services:
     environment:
       TZ: "UTC"
       ARG__THEME: "dark"
+      ARG__API: ""
+      ARG__API_LOG: ""
     labels:
       - homepage.group=ImageGeneration
       - homepage.name=AUTOMATIC1111
