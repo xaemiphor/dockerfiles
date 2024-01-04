@@ -56,7 +56,7 @@ if [[ -f "/config/config.json" ]]; then
 fi
 
 for _arg in $(env | awk -F '=' '/^ARG__/{print $1}' | sort); do
-  var=$(echo "${_arg,,}" | sed 's/^arg__//g')
+  var=$(echo "${_arg,,}" | sed -e 's/^arg__//g' -e 's/_/-/g')
   value="${!_arg}"
   if [[ -z "${value}" ]]; then
     _ARGS+=( "--${var}" )
