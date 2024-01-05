@@ -14,11 +14,11 @@ echo "Woodpecker: ${WOODPECKER:-false}"
 _footer
 
 _header "Variable list"
-env | awk -F'=' '/=/{print $1}'
+env | awk -F'=' '/=/{print $1}' | sort -h
 _footer
 
 _header "Test Data 'FOO'"
-__VARS=( $(env | awk -F'=' 'tolower($1) ~ /foo/ && /=/{print $1}') )
+__VARS=( $(env | awk -F'=' 'tolower($1) ~ /foo/ && /=/{print $1}' | sort -h) )
 for entry in ${__VARS[@]}; do
   echo "[variable] ${entry}"
   echo "[value] ${!entry}"
