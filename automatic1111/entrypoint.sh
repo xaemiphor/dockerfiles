@@ -69,5 +69,9 @@ for _arg in $(env | awk -F '=' '/^ARG__/{print $1}' | sort); do
   fi
 done
 
+# Install any deps from extensions
+find /data/extensions/ -maxdepth 2 -type f -name 'requirements.txt' -exec pip install -r {} \;
+PYTHONPATH=/app find /data/extensions/ -maxdepth 2 -type f -name 'install.py' -exec python {} \;
+
 cd /app
 python ${SCRIPT:-webui.py} ${_ARGS[@]}
