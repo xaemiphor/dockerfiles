@@ -1,6 +1,6 @@
 #!/bin/bash
 set -e
-_ARGS=( '--listen' '--port' "${PORT:-7860}" )
+_ARGS=( '--port' "${PORT:-7860}" )
 
 if [[ ! -e "/config/config.json" ]]; then
   if [[ -L "/app/config.json" ]]; then
