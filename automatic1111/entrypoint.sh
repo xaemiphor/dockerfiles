@@ -55,7 +55,9 @@ for _arg in $(env | awk -F '=' '/^ARG__/{print $1}' | sort); do
 done
 
 # Restore files that may have gone missing due to docker mounts
-git status -s | awk '$1 ~ /^D/{for (i=2; i<NF; i++) printf $i " "; print $NF}' | xargs git restore
+if [[ $(git status -s | awk '$1 ~ /^D/{for (i=2; i<NF; i++) printf $i " "; print $NF}' | wc -l) -gt 0 ]]; then
+  git status -s | awk '$1 ~ /^D/{for (i=2; i<NF; i++) printf $i " "; print $NF}' | xargs git restore
+fi
 
 # Install any deps from extensions
 find /app/extensions/ -maxdepth 2 -type f -name 'requirements.txt' -exec pip install -r {} \;
