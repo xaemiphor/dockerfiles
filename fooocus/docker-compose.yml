@@ -17,8 +17,10 @@ services:
     ports:
       - "81:7865"
     volumes:
-      - "/srv/config/fooocus:/config" # Holds config files, etc
-      - "/srv/data/fooocus:/data" # Hold models and output
+      - "/srv/config/fooocus:/config" # Config.txt will be stored here
+      - "/srv/config/fooocus/presets:/app/presets"
+      - "/srv/data/fooocus/models:/app/models"
+      - "/srv/data/fooocus/outputs:/app/outputs"
     environment:
       TZ: "UTC"
       ARG__THEME: dark

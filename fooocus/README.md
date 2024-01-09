@@ -1,8 +1,8 @@
 # fooocus
 
 A simple docker wrapper on https://github.com/lllyasviel/Fooocus.   
-Entrypoint updates config.txt to use /data instead of /app, but retains existing structures.   
-Other than attempting to restructure content between /config and /data folders, no other changes are made.
+Attempts to restructure application paths to consolodate into /config and /data had some annoying side-effects, so this has been simplified at the cost of just adding more volume mounts.   
+ARG__ and CFG__ prefixes still manipulate the CLI arguments and configuration variables, but you can also directly edit config.txt and restart the container.
 
 Env Vars coded:
 ```
@@ -14,8 +14,6 @@ ARG__* | string - Direct passthrough of arguments to the launch command
 Useful to know:
 ```
 /config/config.txt - Is symlinked to where fooocus expects it, and will be modified by CFG_ env vars directly
-/config/presets/* - Is populated by foocus defaults, then directly symlinked
-/data/outputs/ - Is hardcoded due to gradio/fooocus not passing files outside the project directory
 ```
 
 ## docker-compose
@@ -38,13 +36,16 @@ services:
     ports:
       - "81:7865"
     volumes:
-      - "/srv/config/fooocus:/config" # Holds config files, etc
-      - "/srv/data/fooocus:/data" # Hold models and output
+      - "/srv/config/fooocus:/config" # Config.txt will be stored here
+      - "/srv/config/fooocus/presets:/app/presets"
+      - "/srv/data/fooocus/models:/app/models"
+      - "/srv/data/fooocus/outputs:/app/outputs"
+      # ETC
     environment:
       TZ: "UTC"
+      ARG__LISTEN: ""
       ARG__THEME: dark
       ARG__PRESET: realistic
-      ARG__ALWAYS_GPU: ""
     labels:
       - homepage.group=ImageGeneration
       - homepage.name=Fooocus
