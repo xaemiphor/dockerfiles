@@ -2,7 +2,7 @@
 set -e
 _ARGS=( '--port' "${PORT:-7865}" )
 
-if [[ "${AUTOUPDATE}" == "false" ]]; then
+if [[ "${AUTOUPDATE:-}" == "false" ]]; then
   SCRIPT=launch.py
 fi
 

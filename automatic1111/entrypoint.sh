@@ -2,6 +2,10 @@
 set -e
 _ARGS=( '--port' "${PORT:-7860}" )
 
+if [[ "${AUTOUPDATE:-}" == "true" ]]; then
+  cd /app && git pull
+fi
+
 if ! mountpoint -q /app/config.json; then
   if [[ ! -e "/config/config.json" ]]; then
     if [[ -L "/app/config.json" ]]; then
