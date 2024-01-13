@@ -1,0 +1,36 @@
+version: '3.9'
+
+services:
+  sdnext:
+    build:
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    runtime: nvidia
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities:
+                - gpu
+    ports:
+      - "81:7860"
+    volumes:
+      - "/srv/config/sdnext:/config" # Holds config.json file
+      - "/srv/data/sdnext/models:/app/models"
+      - "/srv/data/sdnext/outputs:/app/outputs"
+      - "/srv/data/sdnext/extensions:/app/extensions"
+      - "/srv/data/sdnext/embeddings:/app/embeddings"
+      - "/srv/data/sdnext/log:/app/log"
+    environment:
+      TZ: "UTC"
+      ARG__THEME: dark
+      ARG__API: ""
+      ARG__API_LOG: ""
+      ARG__listen: ""
+      ARG__enable_insecure_extension_access: ""
+    labels:
+      - homepage.group=ImageGeneration
+      - homepage.name=SD.Next
+      - homepage.href=http://<this-host>:81/
