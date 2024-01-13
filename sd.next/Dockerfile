@@ -9,8 +9,7 @@ RUN \
     pip install --upgrade pip && \
     git clone --depth 1 https://github.com/vladmandic/automatic.git /app && \
     cd /app && pip install --no-cache-dir -r requirements_versions.txt && \
-    pip install --no-cache-dir opencv-python-headless && \
-    cd /app && COMMANDLINE_ARGS="--skip-torch-cuda-test" python -c 'from modules import launch_utils; launch_utils.prepare_environment()'
+    pip install --no-cache-dir opencv-python-headless
 
 COPY entrypoint.sh /entrypoint.sh
 
