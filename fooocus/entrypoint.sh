@@ -61,4 +61,5 @@ if [[ $(cd /app ; git status -s | awk '$1 ~ /^D/{for (i=2; i<NF; i++) printf $i 
 fi
 
 cd /app
+echo "== $(date -u) Starting with args ${SCRIPT:-entry_with_update.py} ${_ARGS[@]}"
 python ${SCRIPT:-entry_with_update.py} ${_ARGS[@]}
