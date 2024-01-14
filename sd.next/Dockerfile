@@ -8,7 +8,7 @@ RUN \
     apt-get update && apt-get -y install wget git python3 python3-venv libgl1 libglib2.0-0 && apt-get clean && \
     pip install --upgrade pip && \
     git clone --depth 1 https://github.com/vladmandic/automatic.git /app && \
-    cd /app && pip install --no-cache-dir -r requirements_versions.txt && \
+    cd /app && pip install --no-cache-dir -r requirements.txt && \
     pip install --no-cache-dir opencv-python-headless
 
 COPY entrypoint.sh /entrypoint.sh
