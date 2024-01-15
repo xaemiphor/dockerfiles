@@ -69,5 +69,5 @@ find /app/extensions/ -maxdepth 2 -type f -name 'requirements.txt' -exec pip ins
 PYTHONPATH=/app find /app/extensions/ -maxdepth 2 -type f -name 'install.py' -exec python {} \;
 
 cd /app
-echo "== $(date -u) Starting with args ${SCRIPT:-webui.py} ${_ARGS[@]}"
-python ${SCRIPT:-webui.py} ${_ARGS[@]}
+echo "== $(date -u) Starting with args webui.sh ${_ARGS[@]}"
+/app/webui.sh ${_ARGS[@]}
