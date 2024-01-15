@@ -11,11 +11,11 @@ if ! mountpoint -q /app/config.json; then
     if [[ -L "/app/config.json" ]]; then
       rm /app/config.json
     fi
-    if [[ ! -e "/app/config.json" ]]; then
-      cd /app
-      python3 -c 'from modules import shared, shared_init; shared_init.initialize(); shared.opts.save(shared.config_filename)'
-      mv /app/config.json /config/config.json
-    fi
+#    if [[ ! -e "/app/config.json" ]]; then
+#      cd /app
+#      python3 -c 'from modules import shared, shared_init; shared_init.initialize(); shared.opts.save(shared.config_filename)'
+#      mv /app/config.json /config/config.json
+#    fi
   fi
   if [[ -f "/config/config.json" ]]; then
     if [[ ! -L "/app/config.json" ]]; then
