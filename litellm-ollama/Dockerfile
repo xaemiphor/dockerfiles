@@ -1,6 +1,8 @@
 #PLATFORMS=linux/amd64,linux/arm64/v8
 FROM ollama/ollama as ollama
 
+EXPOSE 8000
+
 RUN \
     echo "installing litellm" && \
     apt-get update && \
