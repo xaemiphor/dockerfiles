@@ -1,21 +1,25 @@
 version: '3.9'
 
+x-nvidia: &nvidia
+  runtime: nvidia
+  deploy:
+    resources:
+      reservations:
+        devices:
+          - driver: nvidia
+            count: all
+            capabilities:
+              - gpu
+
 services:
   litellm-ollama1:
     build:
       dockerfile: Dockerfile
     restart: unless-stopped
-    runtime: nvidia
-    deploy:
-      resources:
-        reservations:
-          devices:
-            - driver: nvidia
-              count: all
-              capabilities:
-                - gpu
     ports:
       - "8000:8000"
       - "11434:11434"
     volumes:
       - "/srv/data/ollama:/root/.ollama"
+    environment:
+      OLLAMA_PULL: tinydolphin,tinyllama
