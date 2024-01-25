@@ -14,21 +14,24 @@ Useful to know:
 ```
 version: '3.9'
 
+x-nvidia: &nvidia
+  runtime: nvidia
+  deploy:
+    resources:
+      reservations:
+        devices:
+          - driver: nvidia
+            count: all
+            capabilities:
+              - gpu
+
 services:
   automatic1111:
+    <<: *nvidia
     image: ghcr.io/xaemiphor/automatic1111:main
     restart: unless-stopped
-    runtime: nvidia
-    deploy:
-      resources:
-        reservations:
-          devices:
-            - driver: nvidia
-              count: all
-              capabilities:
-                - gpu
     ports:
-      - "81:7860"
+      - "81:7861"
     volumes:
       - "/srv/config/automatic1111:/config" # Holds config.json file
       - "/srv/data/automatic1111/models:/app/models"
