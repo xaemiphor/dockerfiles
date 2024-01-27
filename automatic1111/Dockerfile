@@ -9,7 +9,7 @@ RUN \
     useradd -u 1000 --create-home user && \
     mkdir /app && chown user:user /app && \
     echo -e "import sys\nsys.exit()" > /exit.py && chmod 777 /exit.py && \
-    su user -c 'git clone https://github.com/AUTOMATIC1111/stable-diffusion-webui.git /app' &&
+    su user -c 'git clone --depth 1 --single-branch https://github.com/AUTOMATIC1111/stable-diffusion-webui.git /app' &&
     LAUNCH_SCRIPT=/exit.py su user -c '/app/webui.sh --skip-torch-cuda-test' && \
     rm /exit.py
     
