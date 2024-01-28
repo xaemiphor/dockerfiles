@@ -15,6 +15,9 @@ FROM ubuntu:jammy
 
 ARG S6_OVERLAY_VERSION=3.1.6.2
 
+EXPOSE 11434
+EXPOSE 8000
+
 RUN \
     mkdir /config /data && \
     apt-get update && apt-get -y install curl xz-utils && \
