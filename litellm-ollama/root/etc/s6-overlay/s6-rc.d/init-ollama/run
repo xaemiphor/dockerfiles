@@ -1,0 +1,4 @@
+#!/usr/bin/bash
+# shellcheck shell=bash
+# TODO Autopull anything from OLLAMA_PULL
+echo "Hi"

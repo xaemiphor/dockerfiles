@@ -1,0 +1,2 @@
+#!/usr/bin/bash
+/app/litellm --port ${LITELLM_PORT:-8000} --host ${LITELLM_HOST:-0.0.0.0}

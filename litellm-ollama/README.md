@@ -27,7 +27,8 @@ services:
       - "8000:8000"
       - "11434:11434"
     volumes:
-      - "/srv/data/ollama:/root/.ollama"
+      - "/srv/config/litellm-ollama:/config"
+      - "/srv/data/litellm-ollama:/data"
     environment:
       OLLAMA_PULL: tinydolphin,tinyllama
       LITELLM_PORT: 8000
