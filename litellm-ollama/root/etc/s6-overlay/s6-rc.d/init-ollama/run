@@ -1,4 +1,8 @@
 #!/usr/bin/bash
 # shellcheck shell=bash
-# TODO Autopull anything from OLLAMA_PULL
-echo "Hi"
+while ! nc -z localhost 11434; do
+  sleep 0.5s
+done
+if [[ -n "${OLLAMA_PULL:-}" ]]; then
+  echo -n "${OLLAMA_PULL:-}" | xargs -P1 -n1 -d ',' ollama pull
+fi
