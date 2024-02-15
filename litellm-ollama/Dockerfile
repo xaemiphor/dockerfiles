@@ -19,7 +19,7 @@ EXPOSE 8000
 
 RUN \
     mkdir /config /data && \
-    apt-get update && apt-get -y install curl xz-utils && \
+    apt-get update && apt-get -y install curl xz-utils netcat && \
     curl --silent -L https://github.com/just-containers/s6-overlay/releases/download/v${S6_OVERLAY_VERSION}/s6-overlay-noarch.tar.xz | tar -C / -Jxp && \
     curl --silent -L https://github.com/just-containers/s6-overlay/releases/download/v${S6_OVERLAY_VERSION}/s6-overlay-$(uname -m).tar.xz | tar -C / -Jxp && \
     apt-get clean
