@@ -9,4 +9,4 @@ fi
 if [[ ! -d "${OLLAMA_MODELS}" ]]; then
   mkdir -p "${OLLAMA_MODELS}"
 fi
-/app/ollama serve
+/command/s6-notifyoncheck /app/ollama serve
