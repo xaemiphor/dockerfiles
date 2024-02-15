@@ -1,7 +1,6 @@
 #PLATFORMS=linux/amd64,linux/arm64/v8
 FROM ollama/ollama as ollama
 
-
 FROM python:3-buster as litellm
 
 RUN \

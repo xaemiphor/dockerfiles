@@ -13,6 +13,7 @@ x-nvidia: &nvidia
 
 services:
   litellm-ollama:
+#    image: ghcr.io/xaemiphor/litellm-ollama:main
     build:
       dockerfile: Dockerfile
     restart: unless-stopped
