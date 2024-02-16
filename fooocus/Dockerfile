@@ -13,7 +13,7 @@ RUN \
     mkdir -p /app && chown user:user /app && \
     su user -c 'git clone --depth 1 https://github.com/lllyasviel/Fooocus.git /app' && \
     su user -c 'python3 -m venv venv' && \
-    su user -c 'source venv/bin/activate ; pip install -r requirements_versions.txt'
+    su user -c 'export PATH="/app/venv/bin:${PATH}" ; pip install -r requirements_versions.txt'
 
 USER user
 
