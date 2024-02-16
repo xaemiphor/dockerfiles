@@ -7,12 +7,12 @@ RUN \
     pip install --upgrade pip && \
     pip install --no-cache-dir opencv-python-headless && \
     useradd -u 1000 --create-home user && \
-    mkdir /app && chown user:user /app && \
-    echo -e "import sys\nsys.exit()" > /exit.py && chmod 777 /exit.py && \
-    su user -c 'git clone --depth 1 --single-branch https://github.com/AUTOMATIC1111/stable-diffusion-webui.git /app' &&
-    LAUNCH_SCRIPT=/exit.py su user -c '/app/webui.sh --skip-torch-cuda-test' && \
-    rm /exit.py
-    
+    mkdir -p /app && chown user:user /app && \
+    su user -c 'git clone --depth 1 --single-branch https://github.com/AUTOMATIC1111/stable-diffusion-webui.git /app' && \
+    su user -c 'sed "/start()/d" /app/launch.py > /app/prep_env.py' && \
+    LAUNCH_SCRIPT=/app/prep_env.py su user -c '/app/webui.sh --skip-torch-cuda-test --reinstall-torch' && \
+    rm /app/prep_env.py
+
 USER user
 
 #COPY entrypoint.sh /entrypoint.sh
@@ -20,4 +20,4 @@ USER user
 ENTRYPOINT ["/app/webui.sh"]
 
 HEALTHCHECK --interval=30s --timeout=5s --start-period=5m \
-  CMD curl -f http://localhost:${PORT:-7861}/info || exit 1
+  CMD curl -f http://localhost:${PORT:-7860}/info || exit 1
