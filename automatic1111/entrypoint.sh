@@ -70,4 +70,4 @@ fi
 
 cd /app
 echo "== $(date -u) Starting with args ${SCRIPT:-webui.sh} ${_ARGS[@]}"
-${SCRIPT:-webui.sh} ${_ARGS[@]}
+bash ${SCRIPT:-webui.sh} ${_ARGS[@]}
