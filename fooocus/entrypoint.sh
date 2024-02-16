@@ -62,4 +62,5 @@ fi
 
 cd /app
 echo "== $(date -u) Starting with args ${SCRIPT:-entry_with_update.py} ${_ARGS[@]}"
+source venv/bin/activate
 python ${SCRIPT:-entry_with_update.py} ${_ARGS[@]}
