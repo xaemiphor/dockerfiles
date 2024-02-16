@@ -15,9 +15,9 @@ RUN \
 
 USER user
 
-#COPY entrypoint.sh /entrypoint.sh
-#ENTRYPOINT ["/entrypoint.sh"]
-ENTRYPOINT ["/app/webui.sh"]
+#ENTRYPOINT ["/app/webui.sh"]
+COPY entrypoint.sh /entrypoint.sh
+ENTRYPOINT ["/entrypoint.sh"]
 
 HEALTHCHECK --interval=30s --timeout=5s --start-period=5m \
   CMD curl -f http://localhost:${PORT:-7860}/info || exit 1
