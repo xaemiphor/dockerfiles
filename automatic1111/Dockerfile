@@ -10,7 +10,7 @@ RUN \
     mkdir -p /app && chown user:user /app && \
     su user -c 'git clone --depth 1 --single-branch https://github.com/AUTOMATIC1111/stable-diffusion-webui.git /app' && \
     su user -c 'sed "/start()/d" /app/launch.py > /app/prep_env.py' && \
-    LAUNCH_SCRIPT=/app/prep_env.py su user -c '/app/webui.sh --skip-torch-cuda-test --reinstall-torch' && \
+    LAUNCH_SCRIPT=/app/prep_env.py su user -c '/app/webui.sh --skip-torch-cuda-test --reinstall-torch --reinstall-xformers' && \
     rm /app/prep_env.py
 
 USER user

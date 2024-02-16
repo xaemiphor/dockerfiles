@@ -65,8 +65,8 @@ if [[ $(cd /app ; git status -s | awk '$1 ~ /^D/{for (i=2; i<NF; i++) printf $i 
 fi
 
 # Install any deps from extensions
-find /app/extensions/ -maxdepth 2 -type f -name 'requirements.txt' -exec pip install -r {} \;
-PYTHONPATH=/app find /app/extensions/ -maxdepth 2 -type f -name 'install.py' -exec python {} \;
+#find /app/extensions/ -maxdepth 2 -type f -name 'requirements.txt' -exec pip install -r {} \;
+#PYTHONPATH=/app find /app/extensions/ -maxdepth 2 -type f -name 'install.py' -exec python {} \;
 
 cd /app
 echo "== $(date -u) Starting with args ${SCRIPT:-webui.sh} ${_ARGS[@]}"
