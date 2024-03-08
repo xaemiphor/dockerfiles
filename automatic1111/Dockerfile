@@ -8,12 +8,14 @@ RUN \
     apt-get update && apt-get -y install wget git python3-venv libgl1 libglib2.0-0 libgoogle-perftools4 libtcmalloc-minimal4 bc && apt-get clean && \
     pip install --upgrade pip && \
     pip install --no-cache-dir opencv-python-headless && \
+    pip cache purge && \
     useradd -u 1000 --create-home user && \
     mkdir -p /app && chown user:user /app && \
     su user -c 'git clone --depth 1 --single-branch --branch v${VERSION} https://github.com/AUTOMATIC1111/stable-diffusion-webui.git /app' && \
     su user -c 'sed "/start()/d" /app/launch.py > /app/prep_env.py' && \
     LAUNCH_SCRIPT=/app/prep_env.py su user -c '/app/webui.sh --skip-torch-cuda-test --reinstall-torch --reinstall-xformers' && \
-    rm /app/prep_env.py
+    rm /app/prep_env.py && \
+    su user -c 'pip cache purge'
 
 #ENTRYPOINT ["/app/webui.sh"]
 COPY entrypoint.sh /entrypoint.sh

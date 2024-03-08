@@ -19,7 +19,7 @@ services:
     ports:
       - "81:7861"
     volumes:
-      - "/srv/config/automatic1111:/config" # Holds config.json file
+      - "/srv/config/automatic1111:/config" # Holds any json config files
       - "/srv/data/automatic1111/models:/app/models"
       - "/srv/data/automatic1111/outputs:/app/outputs"
       - "/srv/data/automatic1111/extensions:/app/extensions"
@@ -27,11 +27,13 @@ services:
       - "/srv/data/automatic1111/log:/app/log"
     environment:
       TZ: "UTC"
-      ARG__THEME: dark
-      ARG__API: ""
-      ARG__API_LOG: ""
-      ARG__listen: ""
-      ARG__enable_insecure_extension_access: ""
+    command:
+      - --theme
+      - dark
+      - --api
+      - --api-log
+      - --listen
+      - --enable-insecure-extension-access
     labels:
       - homepage.group=ImageGeneration
       - homepage.name=AUTOMATIC1111

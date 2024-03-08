@@ -23,9 +23,16 @@ services:
       - "/srv/data/fooocus/outputs:/app/outputs"
     environment:
       TZ: "UTC"
-      ARG__THEME: dark
-      ARG__PRESET: realistic
-      ARG__ALWAYS_GPU: ""
+      config_path: /config/config.txt
+      path_checkpoints: /app/models/Stable-diffusion #/app/models/checkpoints
+      path_loras: /app/models/Lora #/app/models/loras
+      path_vae_approx: /app/models/VAE-approx #/app/models/vae_approx
+    command:
+      - --theme
+      - dark
+      - --preset
+      - realistic
+      - --always-gpu
     labels:
       - homepage.group=ImageGeneration
       - homepage.name=Fooocus

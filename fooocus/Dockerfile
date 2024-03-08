@@ -9,11 +9,13 @@ RUN \
     pip install --upgrade pip && \
     pip install --no-cache-dir torch==2.1.0 torchvision==0.16.0 --extra-index-url https://download.pytorch.org/whl/cu121 && \
     pip install --no-cache-dir opencv-python-headless && \
+    pip cache purge && \
     useradd -u 1000 --create-home user && \
     mkdir -p /app && chown user:user /app && \
     su user -c 'git clone --depth 1 --branch ${VERSION} https://github.com/lllyasviel/Fooocus.git /app' && \
     su user -c 'python3 -m venv venv' && \
-    su user -c 'export PATH="/app/venv/bin:${PATH}" ; pip install -r requirements_versions.txt'
+    su user -c 'export PATH="/app/venv/bin:${PATH}" ; pip install --no-cache-dir -r requirements_versions.txt' && \
+    su user -c 'pip cache purge'
 
 COPY entrypoint.sh /entrypoint.sh
 ENTRYPOINT ["/entrypoint.sh"]
