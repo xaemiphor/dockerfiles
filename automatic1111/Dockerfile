@@ -5,7 +5,7 @@ WORKDIR /app
 ARG VERSION
 RUN \
     wget -q https://github.com/jqlang/jq/releases/download/jq-1.7.1/jq-linux-amd64 -O /usr/bin/jq && chmod +x /usr/bin/jq && \
-    apt-get update && apt-get -y install wget git python3-venv libgl1 libglib2.0-0 libgoogle-perftools4 libtcmalloc-minimal4 && apt-get clean && \
+    apt-get update && apt-get -y install wget git python3-venv libgl1 libglib2.0-0 libgoogle-perftools4 libtcmalloc-minimal4 bc && apt-get clean && \
     pip install --upgrade pip && \
     pip install --no-cache-dir opencv-python-headless && \
     useradd -u 1000 --create-home user && \
