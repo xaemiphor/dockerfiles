@@ -1,5 +1,8 @@
 #!/bin/bash
 set -e
+if [[ -n "${CONTAINER_DEBUG:-}" ]]; then
+  set -x
+fi
 _ARGS=( '--port' "${PORT:-7865}" )
 
 if [[ "${AUTOUPDATE:-}" == "false" ]]; then

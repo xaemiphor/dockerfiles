@@ -1,10 +1,9 @@
 #!/bin/bash
 set -e
-_ARGS=( '--port' "${PORT:-7860}" )
-
-if [[ "${AUTOUPDATE:-}" == "true" ]]; then
-  cd /app && git pull
+if [[ -n "${CONTAINER_DEBUG:-}" ]]; then
+  set -x
 fi
+_ARGS=( '--port' "${PORT:-7860}" )
 
 if ! mountpoint -q /app/config.json; then
   if [[ ! -e "/config/config.json" ]]; then
