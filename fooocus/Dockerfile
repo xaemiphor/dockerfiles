@@ -15,8 +15,6 @@ RUN \
     su user -c 'python3 -m venv venv' && \
     su user -c 'export PATH="/app/venv/bin:${PATH}" ; pip install -r requirements_versions.txt'
 
-USER user
-
 COPY entrypoint.sh /entrypoint.sh
 ENTRYPOINT ["/entrypoint.sh"]
 

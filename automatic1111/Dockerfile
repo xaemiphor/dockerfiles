@@ -15,8 +15,6 @@ RUN \
     LAUNCH_SCRIPT=/app/prep_env.py su user -c '/app/webui.sh --skip-torch-cuda-test --reinstall-torch --reinstall-xformers' && \
     rm /app/prep_env.py
 
-USER user
-
 #ENTRYPOINT ["/app/webui.sh"]
 COPY entrypoint.sh /entrypoint.sh
 ENTRYPOINT ["/entrypoint.sh"]

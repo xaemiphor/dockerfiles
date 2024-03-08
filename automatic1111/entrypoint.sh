@@ -5,6 +5,11 @@ if [[ -n "${CONTAINER_DEBUG:-}" ]]; then
 fi
 _ARGS=( '--port' "${PORT:-7860}" )
 
+# Fix ownerships
+for x in '/config' '/app'; do
+  chown -R 1000:1000 ${x}
+done
+
 if ! mountpoint -q /app/config.json; then
   if [[ ! -e "/config/config.json" ]]; then
     if [[ -L "/app/config.json" ]]; then
@@ -12,7 +17,7 @@ if ! mountpoint -q /app/config.json; then
     fi
     if [[ ! -e "/app/config.json" ]]; then
       cd /app
-      /app/venv/bin/python3 -c 'from modules import shared, shared_init; shared_init.initialize(); shared.opts.save(shared.config_filename)'
+      su user -c "/app/venv/bin/python3 -c 'from modules import shared, shared_init; shared_init.initialize(); shared.opts.save(shared.config_filename)'"
       mv /app/config.json /config/config.json
     fi
   fi
@@ -60,7 +65,7 @@ done
 # Restore files that may have gone missing due to docker mounts
 if [[ $(cd /app ; git status -s | awk '$1 ~ /^D/{for (i=2; i<NF; i++) printf $i " "; print $NF}' | wc -l) -gt 0 ]]; then
   cd /app
-  git status -s | awk '$1 ~ /^D/{for (i=2; i<NF; i++) printf $i " "; print $NF}' | xargs git restore
+  su user -c "git status -s | awk '\$1 ~ /^D/{for (i=2; i<NF; i++) printf \$i \" \"; print \$NF}' | xargs git restore"
 fi
 
 # Install any deps from extensions
@@ -69,4 +74,4 @@ fi
 
 cd /app
 echo "== $(date -u) Starting with args ${SCRIPT:-webui.sh} ${_ARGS[@]}"
-bash ${SCRIPT:-webui.sh} ${_ARGS[@]}
+su user -c "bash ${SCRIPT:-webui.sh} ${_ARGS[@]}"

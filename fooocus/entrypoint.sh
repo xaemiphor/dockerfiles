@@ -9,6 +9,11 @@ if [[ "${AUTOUPDATE:-}" == "false" ]]; then
   SCRIPT=launch.py
 fi
 
+# Fix ownerships
+for x in '/config' '/app'; do
+  chown -R 1000:1000 ${x}
+done
+
 # If the path is already mounted, don't bother generating or symlinking it
 if ! mountpoint -q /app/config.txt; then
   if [[ ! -f "/config/config.txt" ]]; then
@@ -19,7 +24,7 @@ if ! mountpoint -q /app/config.txt; then
     if [[ ! -e "/app/config.txt" ]]; then
       # Create /config/config.txt, then move it to /app/config.txt
       cd /app
-      /app/venv/bin/python3 -c 'import modules.config'
+      su user -c "/app/venv/bin/python3 -c 'import modules.config'"
       mv /app/config.txt /config/config.txt
     fi
   fi
@@ -60,10 +65,9 @@ done
 # Restore files that may have gone missing due to docker mounts
 if [[ $(cd /app ; git status -s | awk '$1 ~ /^D/{for (i=2; i<NF; i++) printf $i " "; print $NF}' | wc -l) -gt 0 ]]; then
   cd /app
-  git status -s | awk '$1 ~ /^D/{for (i=2; i<NF; i++) printf $i " "; print $NF}' | xargs git restore
+  su user -c "git status -s | awk '\$1 ~ /^D/{for (i=2; i<NF; i++) printf \$i \" \"; print \$NF}' | xargs git restore"
 fi
 
 cd /app
 echo "== $(date -u) Starting with args ${SCRIPT:-entry_with_update.py} ${_ARGS[@]}"
-source venv/bin/activate
-python ${SCRIPT:-entry_with_update.py} ${_ARGS[@]}
+su user -c "/app/venv/bin/python ${SCRIPT:-entry_with_update.py} ${_ARGS[@]}"
