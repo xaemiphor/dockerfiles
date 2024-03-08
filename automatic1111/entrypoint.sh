@@ -36,4 +36,4 @@ fi
 cd /app
 _ARGS+=( "$@" )
 echo "== $(date -u) Starting with args ${SCRIPT:-webui.sh} ${_ARGS[@]}"
-su user -c "bash ${SCRIPT:-webui.sh} ${_ARGS[@]}"
+su user -c 'bash "$0" "$@"' -- "${SCRIPT:-webui.sh}" "${_ARGS[@]}"

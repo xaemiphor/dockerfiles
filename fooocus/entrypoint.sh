@@ -25,4 +25,4 @@ fi
 cd /app
 _ARGS+( "$@" )
 echo "== $(date -u) Starting with args ${SCRIPT:-entry_with_update.py} ${_ARGS[@]}"
-su user -c "/app/venv/bin/python ${SCRIPT:-entry_with_update.py} ${_ARGS[@]}"
+su user -c '/app/venv/bin/python "$0" "$@"' -- "${SCRIPT:-entry_with_update.py}" "${_ARGS[@]}"
