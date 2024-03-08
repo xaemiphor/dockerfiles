@@ -12,7 +12,7 @@ if ! mountpoint -q /app/config.json; then
     fi
     if [[ ! -e "/app/config.json" ]]; then
       cd /app
-      python3 -c 'from modules import shared, shared_init; shared_init.initialize(); shared.opts.save(shared.config_filename)'
+      /app/venv/bin/python3 -c 'from modules import shared, shared_init; shared_init.initialize(); shared.opts.save(shared.config_filename)'
       mv /app/config.json /config/config.json
     fi
   fi
