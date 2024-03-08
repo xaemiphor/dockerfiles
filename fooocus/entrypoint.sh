@@ -19,7 +19,7 @@ if ! mountpoint -q /app/config.txt; then
     if [[ ! -e "/app/config.txt" ]]; then
       # Create /config/config.txt, then move it to /app/config.txt
       cd /app
-      python3 -c 'import modules.config'
+      /app/venv/bin/python3 -c 'import modules.config'
       mv /app/config.txt /config/config.txt
     fi
   fi
