@@ -34,5 +34,6 @@ fi
 #PYTHONPATH=/app find /app/extensions/ -maxdepth 2 -type f -name 'install.py' -exec python {} \;
 
 cd /app
-echo "== $(date -u) Starting with args ${SCRIPT:-webui.sh} ${_ARGS[@]} $@"
-su user -c "bash ${SCRIPT:-webui.sh} ${_ARGS[@]} $@"
+_ARGS+=( "$@" )
+echo "== $(date -u) Starting with args ${SCRIPT:-webui.sh} ${_ARGS[@]}"
+su user -c "bash ${SCRIPT:-webui.sh} ${_ARGS[@]}"
