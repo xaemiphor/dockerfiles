@@ -95,3 +95,5 @@ jobs:
           platforms: ${{ steps.vars.outputs.PLATFORMS || 'linux/amd64' }}
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
+          build-args:
+            VERSION=${{ steps.vars.outputs.VERSION || '' }}
