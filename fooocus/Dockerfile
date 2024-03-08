@@ -1,4 +1,4 @@
-#VERSION=2.2.0
+#VERSION=2.2.1
 FROM python:3.10.6
 
 WORKDIR /app
