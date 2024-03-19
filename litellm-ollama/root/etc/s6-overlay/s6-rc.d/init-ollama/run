@@ -4,5 +4,5 @@ while ! nc -z localhost 11434; do
   sleep 0.5s
 done
 if [[ -n "${OLLAMA_PULL:-}" ]]; then
-  echo -n "${OLLAMA_PULL:-}" | xargs -P1 -n1 -d ',' ollama pull
+  echo -n "${OLLAMA_PULL:-}" | xargs -P1 -n1 -d ',' /app/ollama pull
 fi
