@@ -1,5 +1,7 @@
+#VERSION=0.1.29
 #PLATFORMS=linux/amd64,linux/arm64/v8
-FROM ollama/ollama as ollama
+ARG VERSION
+FROM ollama/ollama:${VERSION} as ollama
 
 FROM python:3-buster as litellm
 
