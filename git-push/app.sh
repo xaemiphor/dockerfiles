@@ -54,7 +54,13 @@ git pull --quiet origin "${__commit_branch}"
 # TODO Add some sort of support for globbing/include/exclude/etc here
 if [[ $(git status --porcelain | wc -l) -gt 0 ]]; then
   echo "Additions or modifications noted, committing and pushing to repository."
-  git add . # Adds all, may eventually need to figure out globbing solution as referenced
+  if [[ "${__glob[@]}" == "*" ]]; then
+    git add . # Adds all, may eventually need to figure out globbing solution as referenced
+  else
+    for x in ${__glob[@]}; do
+      git add ${x}
+    done
+  fi
   git config user.name "${__commit_user}"
   git config user.email "${__commit_email}"
   git commit -m "${__commit_message}" --author="${__commit_user} <${__commit_email}>"
