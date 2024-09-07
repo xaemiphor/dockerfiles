@@ -3,7 +3,7 @@
 ## Github/Gitea/Forgejo Actions usage
 ```
 - name: ansible-lint
-  uses: docker://ghcr.io/xaemiphor/ansible-lint:0.0.1
+  uses: docker://ghcr.io/xaemiphor/ansible-lint:0.0.3
   env:
     profile: production
     offline: true
@@ -15,7 +15,7 @@
 ## Drone usage
 ```
 - name: ansible-lint
-  image: ghcr.io/xaemiphor/ansible-lint:0.0.1
+  image: ghcr.io/xaemiphor/ansible-lint:0.0.3
   settings:
     profile: production
     offline: true
@@ -27,7 +27,7 @@
 ## Woodpecker usage
 ```
 - name: ansible-lint
-  image: ghcr.io/xaemiphor/ansible-lint:0.0.1
+  image: ghcr.io/xaemiphor/ansible-lint:0.0.3
   settings:
     profile: production
     offline: true
