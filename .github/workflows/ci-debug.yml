@@ -9,7 +9,7 @@ jobs:
     name: R&D Debug Action
     steps:
       - name: Git checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@master
         with:
           fetch-depth: 0
       - name: Debug action
