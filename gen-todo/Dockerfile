@@ -1,4 +1,4 @@
-#VERSION=0.0.1
+#VERSION=0.0.2
 #PLATFORMS=linux/amd64,linux/arm64/v8
 FROM node:alpine
 
