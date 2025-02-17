@@ -1,4 +1,4 @@
-#VERSION=1.8.0
+#VERSION=1.9.0
 FROM python:3.10.6
 
 WORKDIR /app
